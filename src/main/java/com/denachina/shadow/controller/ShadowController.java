@@ -5,9 +5,7 @@ import com.denachina.shadow.dao.UserData;
 import com.denachina.shadow.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
@@ -40,4 +38,8 @@ public class ShadowController {
         return userDataService.getUserDataByJobName("出租车");
     }
 
+    @RequestMapping(value = "/update")
+    public int updateJob(HttpServletRequest request, @RequestParam("userId") Integer userId, @RequestParam("jobName") String jobName){
+        return userDataService.updateUserDataJobname(userId, jobName);
+    }
 }

@@ -1,14 +1,11 @@
 package com.denachina.shadow.dbconfig;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -17,11 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.stream.Collectors;
 
 @Configuration
 @EnableTransactionManagement
@@ -30,32 +24,69 @@ import java.util.stream.Collectors;
         transactionManagerRef = "postgresqlTransactionManager",
         basePackages = "com.denachina.shadow.dao"
 )
+@PropertySource(value = "classpath:db.properties")
 public class PostgresConfig {
+
+    @Value("${postgresql.datasource.r.jdbc-url}")
+    private String urlR;
+
+    @Value("${postgresql.datasource.r.username}")
+    private String userNameR;
+
+    @Value("${postgresql.datasource.r.password}")
+    private String passwordR;
+
+
+    @Value("${postgresql.datasource.w.jdbc-url}")
+    private String urlW;
+
+    @Value("${postgresql.datasource.w.username}")
+    private String userNameW;
+
+    @Value("${postgresql.datasource.w.password}")
+    private String passwordW;
+
     /**
      * PostgreSQL datasource ReadOnly definition.
-     *
-     * @return datasource.
      */
+    private DataSource postgresRDataSource() {
+        return BaseConfig.createDataSource(urlR, userNameR, passwordR);
+    }
+
+    /**
+     * PostgreSQL datasource Write definition.
+     */
+    private DataSource postgresWDataSource() {
+        return BaseConfig.createDataSource(urlW, userNameW, passwordW);
+    }
+
     @Bean
-    @ConfigurationProperties(prefix = "spring.postgresql.datasource.r")
-    public DataSource postgresRDataSource() {
-        return DataSourceBuilder.create().build();
+    public DataSource dynamicDataSource() {
+        DataSource PostgresW = postgresWDataSource();
+        DataSource PostgresR = postgresRDataSource();
+
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        targetDataSources.put(PostgresDBContextHolder.POSTGRES_R, PostgresR);
+        targetDataSources.put(PostgresDBContextHolder.POSTGRES_W, PostgresW);
+
+        PostgresDynamicDataSource dynamicDataSource = new PostgresDynamicDataSource();
+        dynamicDataSource.setTargetDataSources(targetDataSources);// 该方法是AbstractRoutingDataSource的方法
+        dynamicDataSource.setDefaultTargetDataSource(PostgresR);//配置默认的数据源
+
+        return dynamicDataSource;
     }
 
     /**
      * Entity manager definition.
-     *
-     * @param builder an EntityManagerFactoryBuilder.
-     * @return LocalContainerEntityManagerFactoryBean.
      */
 
     @Bean(name = "postgresqlEntityManager")
     public LocalContainerEntityManagerFactoryBean postgresqlEntityManagerFactory(EntityManagerFactoryBuilder builder) {
         return builder
-                .dataSource(postgresRDataSource())
+                .dataSource(dynamicDataSource())
                 .packages("com.denachina.shadow.dao")
 //                .properties(hibernateProperties())
-                .persistenceUnit("PostgreSql")
+                .persistenceUnit("database:postgres")
                 .build();
     }
 
@@ -63,7 +94,7 @@ public class PostgresConfig {
     public PlatformTransactionManager postgresqlTransactionManager(@Qualifier("postgresqlEntityManager") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
-
+/*
     private Map<String, Object> hibernateProperties() {
 
         Resource resource = new ClassPathResource("hibernate.properties");
@@ -77,6 +108,6 @@ public class PostgresConfig {
         } catch (IOException e) {
             return new HashMap<>();
         }
-    }
+    }*/
 
 }
