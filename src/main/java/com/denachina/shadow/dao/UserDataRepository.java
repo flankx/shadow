@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.sql.DataSourceDefinition;
-
 /**
  * JpaRepository扩展了PagingAndSortingRepository，后者又扩展了CrudRepository。
  * 1、CrudRepository主要提供CRUD功能。所以它可以让你创建，读取，更新和删除记录，而不必定义自己的方法。
@@ -15,7 +13,7 @@ import javax.annotation.sql.DataSourceDefinition;
  * 3、JpaRepository提供了一些与JPA相关的方法，例如刷新持久化上下文和批量删除记录。
  */
 @Repository("UserDataRepository")
-public interface UserDataRepository extends JpaRepository<UserData, Long> {
+public interface UserDataRepository extends JpaRepository<UserData, Integer> {
     UserData findTopByJobNameOrderByCreatedOnDesc(String jobName);
 
     @Transactional(rollbackFor = Exception.class)

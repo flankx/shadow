@@ -1,5 +1,17 @@
-server:
-  port: 8080
+
 spring:
   jpa:
     open-in-view: false
+
+server:
+  port: 8080
+  # 配置Tomcat的访问日志格式化输出
+  tomcat:
+    accesslog:
+      directory: /data/
+      enabled: true
+      # common - %h %l %u %t "%r" %s %b
+      # combined - %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"
+      pattern: '%{X-Forwarded-For}i - - %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
+      prefix: access_trace_shadow
+      rotate: false
