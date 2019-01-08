@@ -12,6 +12,6 @@ server:
       enabled: true
       # common - %h %l %u %t "%r" %s %b
       # combined - %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"
-      pattern: '%{X-Forwarded-For}i - - %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
+      pattern: '%a - - %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
       prefix: access_trace_shadow
       rotate: false

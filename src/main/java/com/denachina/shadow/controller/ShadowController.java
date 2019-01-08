@@ -6,7 +6,6 @@ import com.denachina.shadow.service.UserDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,11 +27,7 @@ public class ShadowController {
         this.userDataService = userDataService;
     }
 
-    @RequestMapping(value = "/find",
-            method = {RequestMethod.POST,RequestMethod.GET},
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE}
-            )
+    @RequestMapping(value = "/find")
     public List<UserData> findAll(HttpServletRequest request){
         Map<String, String> map = new HashMap<>();
         Enumeration headerNames = request.getHeaderNames();
