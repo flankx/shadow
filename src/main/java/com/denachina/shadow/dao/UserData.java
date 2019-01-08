@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -58,8 +57,8 @@ public class UserData {
         this.level = level;
         this.email = email;
         this.phoneNo = phoneNo;
-        this.createdOn = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
-        this.updatedOn = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+        this.createdOn = ZonedDateTime.now();
+        this.updatedOn = ZonedDateTime.now();
     }
 
 }
