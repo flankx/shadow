@@ -1,7 +1,16 @@
 
 spring:
+  application:
+    name: shadow
+  profiles:
+    active: local
   jpa:
     open-in-view: false
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 server:
   port: 8080
