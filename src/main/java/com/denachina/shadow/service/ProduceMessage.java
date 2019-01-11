@@ -1,3 +1,4 @@
+/*
 package com.denachina.shadow.service;
 
 import org.springframework.amqp.core.AmqpTemplate;
@@ -21,3 +22,4 @@ public class ProduceMessage {
     }
 
 }
+*/

@@ -2,7 +2,6 @@ package com.denachina.shadow.controller;
 
 import com.denachina.shadow.dao.UserData;
 
-import com.denachina.shadow.service.ProduceMessage;
 import com.denachina.shadow.service.UserDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -25,12 +23,12 @@ public class ShadowController {
 
     private final UserDataService userDataService;
 
-    private final ProduceMessage produceMessage;
+//    private final ProduceMessage produceMessage;
 
     @Autowired
-    public ShadowController(UserDataService userDataService, ProduceMessage produceMessage) {
+    public ShadowController(UserDataService userDataService/*, ProduceMessage produceMessage*/) {
         this.userDataService = userDataService;
-        this.produceMessage = produceMessage;
+//        this.produceMessage = produceMessage;
     }
 
     @RequestMapping(value = "/list")
@@ -45,7 +43,7 @@ public class ShadowController {
         logger.info(map.toString());
         List<UserData> userDataList = userDataService.getAllUserData();
 
-        produceMessage.send("执行查询操作,UTC时间 "+Instant.now());
+//        produceMessage.send("执行查询操作,UTC时间 "+Instant.now());
 
         return userDataList;
     }
@@ -53,7 +51,7 @@ public class ShadowController {
     @RequestMapping(value = "/update")
     public int updateJob(HttpServletRequest request, @RequestParam("userId") Integer userId, @RequestParam("jobName") String jobName){
 
-        produceMessage.send("执行查询更新,UTC时间 "+Instant.now() + "; 更新的 userId "+ userId);
+//        produceMessage.send("执行查询更新,UTC时间 "+Instant.now() + "; 更新的 userId "+ userId);
 
         return userDataService.updateUserDataJobname(userId, jobName);
     }
@@ -73,7 +71,7 @@ public class ShadowController {
 
         UserData userData1= userDataService.insertUserData(userData);
 
-        produceMessage.send("执行新增操作,UTC时间 "+Instant.now() + " ; 插入对象 "+ userData1);
+//        produceMessage.send("执行新增操作,UTC时间 "+Instant.now() + " ; 插入对象 "+ userData1);
 
         return userData1.getUserId();
     }
@@ -81,7 +79,7 @@ public class ShadowController {
     public int deleteUser(HttpServletRequest request, @RequestParam("userId") Integer userId){
         logger.info("delete record by userId {}", userId);
 
-        produceMessage.send("执行查询更新,UTC时间 "+Instant.now() + "; 更新的 userId "+ userId);
+//        produceMessage.send("执行查询更新,UTC时间 "+Instant.now() + "; 更新的 userId "+ userId);
 
         return userDataService.deleteUserData(userId);
     }

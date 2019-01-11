@@ -1,3 +1,4 @@
+/*
 package com.denachina.shadow.service;
 
 import org.slf4j.Logger;
@@ -21,3 +22,4 @@ public class ConsumeMessage {
     }
 
 }
+*/

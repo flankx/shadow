@@ -1,3 +1,4 @@
+/*
 package com.denachina.shadow.dbconfig;
 
 import org.springframework.amqp.core.Queue;
@@ -14,3 +15,4 @@ public class RabbitConfig {
 
 }
 
+*/
