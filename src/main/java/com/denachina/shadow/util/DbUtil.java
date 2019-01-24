@@ -1,6 +1,6 @@
 package com.denachina.shadow.util;
 
-import com.denachina.shadow.dbconfig.PostgresDBContextHolder;
+import com.denachina.shadow.config.dbconfig.PostgresDBContextHolder;
 
 public class DbUtil {
 

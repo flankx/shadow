@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/userdata")
@@ -21,18 +18,23 @@ public class ShadowController {
 
     private final static Logger logger = LoggerFactory.getLogger(ShadowController.class);
 
-    private final UserDataService userDataService;
-
-//    private final ProduceMessage produceMessage;
-
     @Autowired
-    public ShadowController(UserDataService userDataService/*, ProduceMessage produceMessage*/) {
-        this.userDataService = userDataService;
-//        this.produceMessage = produceMessage;
-    }
+    UserDataService userDataService;
 
     @RequestMapping(value = "/list")
     public List<UserData> findAll(HttpServletRequest request){
+        String data = request.getQueryString();
+        logger.info(data);
+
+        Map<String, String[]> requestM = request.getParameterMap();
+
+        Map<String, String> resultM = new HashMap<String, String>();
+
+        for (String k : requestM.keySet()) {
+            String v = requestM.get(k)[0];
+            resultM.put(k, v);
+        }
+        logger.info(resultM.toString());
         Map<String, String> map = new HashMap<>();
         Enumeration headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
@@ -44,7 +46,6 @@ public class ShadowController {
         List<UserData> userDataList = userDataService.getAllUserData();
 
 //        produceMessage.send("执行查询操作,UTC时间 "+Instant.now());
-
         return userDataList;
     }
 

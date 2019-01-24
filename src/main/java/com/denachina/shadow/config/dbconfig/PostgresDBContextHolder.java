@@ -1,4 +1,4 @@
-package com.denachina.shadow.dbconfig;
+package com.denachina.shadow.config.dbconfig;
 
 public class PostgresDBContextHolder {
     public static final String POSTGRES_R = "postgresRDataSource";

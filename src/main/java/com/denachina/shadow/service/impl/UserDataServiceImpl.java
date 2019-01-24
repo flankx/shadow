@@ -13,12 +13,8 @@ import java.util.List;
 @Service
 public class UserDataServiceImpl implements UserDataService{
 
-    private final UserDataRepository userDataRepository;
-
     @Autowired
-    public UserDataServiceImpl(UserDataRepository userDataRepository) {
-        this.userDataRepository = userDataRepository;
-    }
+    UserDataRepository userDataRepository;
 
     @Transactional(value = "postgresqlTransactionManager", readOnly = true)
     UserData findUserDataByJobName(String jobName) {

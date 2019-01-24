@@ -1,4 +1,4 @@
-package com.denachina.shadow.dbconfig;
+package com.denachina.shadow.config.dbconfig;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

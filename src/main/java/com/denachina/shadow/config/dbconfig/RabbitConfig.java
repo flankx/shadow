@@ -1,5 +1,5 @@
 /*
-package com.denachina.shadow.dbconfig;
+package com.denachina.shadow.config.dbconfig;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;

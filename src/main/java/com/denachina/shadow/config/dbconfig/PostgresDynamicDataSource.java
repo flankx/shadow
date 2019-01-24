@@ -1,4 +1,4 @@
-package com.denachina.shadow.dbconfig;
+package com.denachina.shadow.config.dbconfig;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
