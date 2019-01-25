@@ -1,7 +1,5 @@
 package com.denachina.shadow.controller;
 
-
-import com.denachina.shadow.dao.SysUser;
 import com.denachina.shadow.pojo.LoginForm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
