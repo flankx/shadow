@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" >
+</head>
+<body>
+<!--登录窗口-->
+<div>
+    <form action="#" th:action="@{/login/submit}" th:object="${cLoginForm}" method="post" class="float-r">
+        <!--登录窗口主体-->
+        <div class="login main-container">
+            <!--caption-->
+            <p class="caption" >账号登录</p>
+            <div>
+                <div class="input-field">
+                    <label >帐 号</label>
+                    <input name="username" type="text" th:placeholder="无敌小霸王" th:field="*{username}" style="width:232px;" value=""/>
+                    <p th:if="${#fields.hasErrors('username')}" class="error" th:errors="*{username}" style="color:red" ></p>
+                </div>
+            </div>
+            <div class="input-field">
+                <label >密 码</label>
+                <input name="password" type="password" th:placeholder="密碼" style="width:232px;" value="" />
+                <p th:if="${#fields.hasErrors('password')}" class="error" th:errors="*{password}" style="color:red"></p>
+                <!--<p th:if="${pwd_message} != null" class="error" th:text="#{${pwd_message}}" style="color:red"></p>-->
+                <p th:if="${pwd_message} != null" class="error" th:text="${pwd_message}" style="color:red"></p>
+            </div>
+            <!--登录-->
+            <button class="black-button" type="submit" >确定</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

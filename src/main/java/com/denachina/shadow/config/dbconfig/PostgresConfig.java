@@ -1,4 +1,4 @@
-package com.denachina.shadow.dbconfig;
+package com.denachina.shadow.config.dbconfig;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,6 @@ public class PostgresConfig {
     @Value("${postgresql.datasource.r.password}")
     private String passwordR;
 
-
     @Value("${postgresql.datasource.w.jdbc-url}")
     private String urlW;
 
@@ -46,18 +45,21 @@ public class PostgresConfig {
     @Value("${postgresql.datasource.w.password}")
     private String passwordW;
 
+    @Value("${postgresql.datasource.diverClassName}")
+    private String diverClassName;
+
     /**
      * PostgreSQL datasource ReadOnly definition.
      */
     private DataSource postgresRDataSource() {
-        return BaseConfig.createDataSource(urlR, userNameR, passwordR);
+        return BaseConfig.createDataSource(urlR, userNameR, passwordR, diverClassName);
     }
 
     /**
      * PostgreSQL datasource Write definition.
      */
     private DataSource postgresWDataSource() {
-        return BaseConfig.createDataSource(urlW, userNameW, passwordW);
+        return BaseConfig.createDataSource(urlW, userNameW, passwordW, diverClassName);
     }
 
     @Bean
