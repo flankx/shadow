@@ -27,7 +27,7 @@ public class MessageController {
         return MessageFormat.format(
                 "Hello, {0}! Welcome back to shadow! 登录时间: {1}",
                 HtmlUtils.htmlEscape(message.getString("name")),
-                HtmlUtils.htmlEscape(String.valueOf(dateTime))
+                HtmlUtils.htmlEscape(dateTime)
         );
     }
 }

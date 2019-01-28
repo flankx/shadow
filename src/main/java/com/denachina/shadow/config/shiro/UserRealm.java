@@ -16,10 +16,9 @@ import java.util.Arrays;
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
-    private SysUserService sysUserService;
+    SysUserService sysUserService;
 
     @Override
-    @SuppressWarnings("unchecked")
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         Session session = SecurityUtils.getSubject().getSession();
         //查询用户的权限

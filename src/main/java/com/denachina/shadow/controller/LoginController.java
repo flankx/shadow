@@ -36,7 +36,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpServletRequest request) {
+    public String logout() {
         try {
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.logout();
@@ -62,7 +62,7 @@ public class LoginController {
 
         try {
             currentUser.login(token);
-            logger.info("sessionID : {}", String.valueOf(currentUser.getSession().getId()));
+            logger.info("sessionID : {}", currentUser.getSession().getId());
         } catch (AuthenticationException e) {
             model.addAttribute("pwd_message", "用户名或密碼錯誤");
             e.printStackTrace();

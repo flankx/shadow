@@ -2,6 +2,7 @@ package com.denachina.shadow;
 
 import com.denachina.shadow.dao.SysUser;
 import com.denachina.shadow.dao.SysUserRepository;
+import com.denachina.shadow.service.SysUserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,12 @@ public class ShadowApplicationTests {
 	@Autowired
 	SysUserRepository sysUserRepository;
 
+	@Autowired
+	SysUserService sysUserService;
+
 	@Test
 	public void contextLoads() {
-		List<SysUser> sysUsers = sysUserRepository.findAll();
+		SysUser sysUsers = sysUserService.getSysUserInfo("admin", "123456");
 		System.out.println(sysUsers);
 	}
 
