@@ -42,7 +42,7 @@ public class UserRealm extends AuthorizingRealm {
         }
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                user.getUsername(),
+                user.getUserName(),
                 user.getPassword(),
                 //ByteSource.Util.bytes("salt"), salt=username+salt,采用明文访问时，不需要此句
                 getName()

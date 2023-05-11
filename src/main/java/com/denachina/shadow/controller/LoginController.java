@@ -1,6 +1,8 @@
 package com.denachina.shadow.controller;
 
-import com.denachina.shadow.pojo.LoginForm;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -14,8 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import com.denachina.shadow.pojo.LoginForm;
 
 @Controller
 public class LoginController {
@@ -47,8 +48,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login/submit", method = RequestMethod.POST)
-    public String loginSubmit(HttpServletRequest request, @Valid @ModelAttribute("cLoginForm") LoginForm loginForm,BindingResult bindingResult
-                              ,Model model) {
+    public String loginSubmit(HttpServletRequest request, @Valid @ModelAttribute("cLoginForm") LoginForm loginForm,
+        BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             logger.info("####[1] login form error: {}", bindingResult.getAllErrors());
             return "login/index";

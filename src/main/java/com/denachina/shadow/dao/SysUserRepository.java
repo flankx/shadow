@@ -5,5 +5,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository("SysUserRepository")
 public interface SysUserRepository extends JpaRepository<SysUser, Integer> {
-    SysUser findByUsernameAndPassword(String username, String password);
+    /**
+     * Find by user name and password sys user.
+     *
+     * @param userName the user name
+     * @param password the password
+     * @return the sys user
+     */
+    SysUser findByUserNameAndPassword(String userName, String password);
 }

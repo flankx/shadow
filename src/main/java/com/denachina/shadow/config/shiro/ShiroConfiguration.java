@@ -1,28 +1,24 @@
 package com.denachina.shadow.config.shiro;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * shiro配置类
  */
 @Configuration
 public class ShiroConfiguration {
-
-    private static final Logger logger = LoggerFactory.getLogger(ShiroConfiguration.class);
 
     /**
      * Shiro的Web过滤器Factory 命名:shiroFilter
@@ -40,8 +36,8 @@ public class ShiroConfiguration {
          * authc：该过滤器下的页面必须验证后才能访问,它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter
          */
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-         /* 过滤链定义，从上向下顺序执行，一般将 / ** 放在最为下边:这是一个坑呢，一不小心代码就不好使了;
-          authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问 */
+        /* 过滤链定义，从上向下顺序执行，一般将 / ** 放在最为下边:这是一个坑呢，一不小心代码就不好使了;
+         authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问 */
         filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
@@ -61,7 +57,7 @@ public class ShiroConfiguration {
      * 不指定名字的话，自动创建一个方法名第一个字母小写的bean
      */
     @Bean
-    public SecurityManager securityManager(){
+    public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(userRealm());
         return securityManager;
@@ -76,11 +72,8 @@ public class ShiroConfiguration {
     }
 
     /**
-     * 凭证匹配器
-     * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
-     * 所以我们需要修改下doGetAuthenticationInfo中的代码;
-     * ）
-     * 可以扩展凭证匹配器，实现 输入密码错误次数后锁定等功能，下一次
+     * 凭证匹配器 （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了 所以我们需要修改下doGetAuthenticationInfo中的代码; ） 可以扩展凭证匹配器，实现
+     * 输入密码错误次数后锁定等功能，下一次
      */
     @Bean(name = "credentialsMatcher")
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
@@ -116,7 +109,8 @@ public class ShiroConfiguration {
 
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor =
+            new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager());
         return authorizationAttributeSourceAdvisor;
     }
