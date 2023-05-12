@@ -11,4 +11,4 @@
 + 生成镜像：在 `Dockerfile` 目录下执行 `docker build -t snowflyaway/shadow:{tagname} .`
 + 部署镜像：在 `Dockerfile` 目录下执行 `docker compose up -d`
 + 查看编排的镜像：`docker compose ls`
-+ 检查服务运行状态：`http://localhost:8080`
++ 检查服务运行状态：http://localhost:8080
