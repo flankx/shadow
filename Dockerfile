@@ -1,31 +1,16 @@
-#FROM openjdk:8
-#FROM openjdk:8-slim
-FROM openjdk:8-jdk-alpine as base
-
-RUN echo "Asia/Shanghai" > /etc/timezone
-
+FROM maven:3-jdk-8-alpine as build
 MAINTAINER flankx
-
-RUN mkdir "/opt/app"
-
+RUN mkdir /opt/app
 WORKDIR /opt/app
-
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN chmod +x ./mvnw
-RUN ./mvnw dependency:resolve
+COPY pom.xml ./
 COPY src ./src
+RUN mvn clean package -U -DskipTests
 
-FROM base as development
-CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'"]
-
-FROM base as build
-RUN ./mvnw package
-
-FROM openjdk:8-jre-alpine as production
-COPY --from=build /opt/app/target/shadow-*.jar /opt/app/app.jar
+FROM openjdk:8-jre-alpine
+RUN echo "Asia/Shanghai" > /etc/timezone
+COPY --from=build /opt/app/target/shadow-*.jar /app.jar
 EXPOSE 8080
 
 ENV JAVA_OPTS=""
 
-ENTRYPOINT java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /opt/app/app.jar
+ENTRYPOINT java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar
