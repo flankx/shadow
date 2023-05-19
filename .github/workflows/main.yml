@@ -31,3 +31,4 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/shadow:latest
           target: production
+          platform: linux/amd64,linux/arm64,
