@@ -6,4 +6,4 @@ EXPOSE 8080
 
 ENV JAVA_OPTS=""
 
-ENTRYPOINT java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+ENTRYPOINT java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /opt/app/app.jar
