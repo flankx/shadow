@@ -1,0 +1,8 @@
+FROM openjdk:8-jre-alpine
+RUN echo "Asia/Shanghai" > /etc/timezone
+ADD /home/ubuntu/app/shadow-*.jar /app.jar
+EXPOSE 8080
+
+ENV JAVA_OPTS=""
+
+ENTRYPOINT java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar
