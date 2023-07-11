@@ -2,13 +2,15 @@
 
 cd /home/ubuntu/app || return 1
 echo "进入目标目录，并构建构建镜像！"
-docker build -t snowflyaway/shadow:latest .
 
 cid=$(docker ps -a |grep "$IMAGE_NAME" | awk '{ print $1}')
 if [ "$cid" != "" ]; then
   docker stop "$cid";
   docker rm "$cid";
 fi
+
+docker build -t snowflyaway/shadow:latest .
+
 echo "检查是否有运行的容器！"
 
 IMAGE_NAME=shadow
