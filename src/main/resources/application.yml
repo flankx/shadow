@@ -1,24 +1,68 @@
 spring:
   application:
     name: shadow
-  jpa:
-    open-in-view: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/shadow?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   sql:
     init:
       mode: always
       schema-locations: classpath:db/schema.sql
       data-locations: classpath:db/data.sql
       continue-on-error: true
-
+logging:
+  level:
+    com.github.shadow.mapper: debug
 server:
   port: 8080
   # 配置Tomcat的访问日志格式化输出
-  tomcat:
+  #  tomcat:
+  #    accesslog:
+  #      directory: /data/
+  #      enabled: true
+  #      # common - %h %l %u %t "%r" %s %b
+  #      # combined - %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"
+  #      pattern: '%a - - %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
+  #      prefix: access_trace_shadow
+  #      rotate: false
+  undertow:
+    # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    buffer-size: 1024
+    # 每个区分配的buffer数量 , 所以pool的大小是buffer-size * buffers-per-region
+    #buffers-per-region: 1024
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    direct-buffers: true
+    threads:
+      # 设置IO线程数, 它主要执行非阻塞的任务
+      io: 8
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+      worker: 256
     accesslog:
-      directory: /data/
-      enabled: true
-      # common - %h %l %u %t "%r" %s %b
-      # combined - %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"
-      pattern: '%a - - %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
-      prefix: access_trace_shadow
-      rotate: false
+      # 是否开启访问日志
+      enabled: false
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-aliases-package: com.github.shadow.entity
+
+knife4j:
+  enable: true
+  openapi:
+    title: 接口文档
+    description: "描述信息"
+#    email: xiaoymin@foxmail.com
+#    concat: 八一菜刀
+#    url: https://docs.xiaominfo.com
+#    version: v4.0
+#    license: Apache 2.0
+#    license-url: https://stackoverflow.com/
+#    terms-of-service-url: https://stackoverflow.com/
+#    group:
+#      test1:
+#        group-name: 分组名称
+#        api-rule: package
+#        api-rule-resources:
+#          - com.knife4j.demo.new3
