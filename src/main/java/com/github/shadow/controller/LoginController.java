@@ -3,6 +3,7 @@ package com.github.shadow.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.github.shadow.pojo.LoginForm;
 
+@Api(value = "用户登录", tags = "用户登录接口")
 @Controller
 public class LoginController {
 

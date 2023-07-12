@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.github.shadow.entity.UserData;
 import com.github.shadow.service.IUserDataService;
 import com.github.shadow.util.JsonUtils;
 
+@Api(value = "用户信息", tags = "用户信息接口")
 @RestController
 @RequestMapping(value = "/userdata")
 public class ShadowController {

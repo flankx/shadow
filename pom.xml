@@ -19,6 +19,7 @@
 		<shiro-spring.version>1.10.0</shiro-spring.version>
 		<mybatis-plus.version>3.5.3.1</mybatis-plus.version>
 		<oshi.version>6.4.4</oshi.version>
+		<jna.version>5.13.0</jna.version>
 		<knife4j-openapi2.version>4.1.0</knife4j-openapi2.version>
 	</properties>
 
@@ -92,6 +93,16 @@
 			<groupId>com.github.oshi</groupId>
 			<artifactId>oshi-core</artifactId>
 			<version>${oshi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>${jna.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>${jna.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
