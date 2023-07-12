@@ -16,8 +16,7 @@ CREATE TABLE IF NOT EXISTS `sys_user`
     UNIQUE KEY `user_name_UK` (`user_name`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 14
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户表';
+  DEFAULT CHARSET = utf8mb4 COMMENT ='用户表';
 
 CREATE TABLE IF NOT EXISTS `user_data`
 (
@@ -36,6 +35,5 @@ CREATE TABLE IF NOT EXISTS `user_data`
     UNIQUE KEY `user_name_UK` (`user_name`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 14
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户信息表';
+  DEFAULT CHARSET = utf8mb4 COMMENT ='用户信息表';
 
