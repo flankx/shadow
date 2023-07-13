@@ -1,24 +1,115 @@
 spring:
   application:
     name: shadow
-  jpa:
-    open-in-view: false
+  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/shadow?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    druid:
+      # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+      initial-size: 4
+      # 最大连接池数量
+      max-active: 20
+      max-evictable-idle-time-millis: 5000000
+      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      # pool-prepared-statements: true
+      # 和 max-pool-prepared-statement-per-connection-size 等价
+      # max-open-prepared-statements: 50
+      # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      # max-pool-prepared-statement-per-connection-size: 20
+      # 获取连接时最大等待时间，单位毫秒。
+      max-wait: 20000
+      # 连接保持空闲而不被驱逐的最小时间
+      min-evictable-idle-time-millis: 300000
+      # 最小连接池数量
+      min-idle: 4
+      stat-view-servlet:
+        enabled: true
+        login-password: admin
+        login-username: admin
+        reset-enable: false
+        url-pattern: /druid/*
+      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-borrow: false
+      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-return: false
+      # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-while-idle: true
+      # 有两个含义：1) Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接。2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明
+      time-between-eviction-runs-millis: 100000
+      # 用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用。
+      validation-query: select 'x'
+      # 单位：秒，检测连接是否有效的超时时间。底层调用jdbc Statement对象的void setQueryTimeout(int seconds)方法
+      validation-query-timeout: 60000
+      web-stat-filter:
+        enabled: true
+        exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+        principal-cookie-name: druid-cookie
+        principal-session-name: druid-session
+        profile-enable: false
+        session-stat-enable: false
+        session-stat-max-count: 1000
+        url-pattern: /*
+
   sql:
     init:
       mode: always
       schema-locations: classpath:db/schema.sql
       data-locations: classpath:db/data.sql
       continue-on-error: true
-
+logging:
+  level:
+    com.github.shadow.mapper: debug
 server:
   port: 8080
   # 配置Tomcat的访问日志格式化输出
-  tomcat:
+  #  tomcat:
+  #    accesslog:
+  #      directory: /data/
+  #      enabled: true
+  #      # common - %h %l %u %t "%r" %s %b
+  #      # combined - %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"
+  #      pattern: '%a - - %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
+  #      prefix: access_trace_shadow
+  #      rotate: false
+  undertow:
+    # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    buffer-size: 1024
+    # 每个区分配的buffer数量 , 所以pool的大小是buffer-size * buffers-per-region
+    #buffers-per-region: 1024
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    direct-buffers: true
+    threads:
+      # 设置IO线程数, 它主要执行非阻塞的任务
+      io: 8
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+      worker: 256
     accesslog:
-      directory: /data/
-      enabled: true
-      # common - %h %l %u %t "%r" %s %b
-      # combined - %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"
-      pattern: '%a - - %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
-      prefix: access_trace_shadow
-      rotate: false
+      # 是否开启访问日志
+      enabled: false
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-aliases-package: com.github.shadow.entity
+
+knife4j:
+  enable: true
+  openapi:
+    title: 接口文档
+    description: "描述信息"
+#    email: xiaoymin@foxmail.com
+#    concat: 八一菜刀
+#    url: https://docs.xiaominfo.com
+#    version: v4.0
+#    license: Apache 2.0
+#    license-url: https://stackoverflow.com/
+#    terms-of-service-url: https://stackoverflow.com/
+#    group:
+#      test1:
+#        group-name: 分组名称
+#        api-rule: package
+#        api-rule-resources:
+#          - com.knife4j.demo.new3
