@@ -1,4 +1,4 @@
-package com.github.shadow.controller;
+package com.github.shadow.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

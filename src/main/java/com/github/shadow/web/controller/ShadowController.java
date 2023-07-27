@@ -1,4 +1,4 @@
-package com.github.shadow.controller;
+package com.github.shadow.web.controller;
 
 import java.time.LocalDate;
 import java.util.Enumeration;
