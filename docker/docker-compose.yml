@@ -1,0 +1,100 @@
+version: "3"
+services:
+  es-master:
+    container_name: es-master
+    hostname: es-master
+    networks:
+      - flankx
+    image: elasticsearch:7.17.7
+    restart: always
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - /root/elasticsearch/conf/es-master.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /root/elasticsearch/master/data:/usr/share/elasticsearch/data
+      - /root/elasticsearch/slave2/logs:/usr/share/elasticsearch/logs
+      - /root/elasticsearch/master/plugins:/usr/share/elasticsearch/plugins
+      - /root/elasticsearch/conf/elastic-certificates.p12:/usr/share/elasticsearch/config/elastic-certificates.p12
+    environment:
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+
+  es-slave1:
+    container_name: es-slave1
+    image: elasticsearch:7.17.7
+    networks:
+      - flankx
+    restart: always
+    ports:
+      - 9201:9200
+      - 9301:9300
+    volumes:
+      - /root/elasticsearch/conf/es-slave1.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /root/elasticsearch/slave1/data:/usr/share/elasticsearch/data
+      - /root/elasticsearch/slave2/logs:/usr/share/elasticsearch/logs
+      - /root/elasticsearch/slave1/plugins:/usr/share/elasticsearch/plugins
+      - /root/elasticsearch/conf/elastic-certificates.p12:/usr/share/elasticsearch/config/elastic-certificates.p12
+    environment:
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+
+  es-slave2:
+    container_name: es-slave2
+    image: elasticsearch:7.17.7
+    networks:
+      - flankx
+    restart: always
+    ports:
+      - 9202:9200
+      - 9302:9300
+    volumes:
+      - /root/elasticsearch/conf/es-slave2.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /root/elasticsearch/slave2/data:/usr/share/elasticsearch/data
+      - /root/elasticsearch/slave2/logs:/usr/share/elasticsearch/logs
+      - /root/elasticsearch/slave2/plugins:/usr/share/elasticsearch/plugins
+      - /root/elasticsearch/conf/elastic-certificates.p12:/usr/share/elasticsearch/config/elastic-certificates.p12
+    environment:
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+
+  kibana:
+    container_name: kibana
+    hostname: kibana
+    networks:
+      - flankx
+    image: kibana:7.17.7
+    restart: always
+    ports:
+      - 5601:5601
+    volumes:
+      - /root/elasticsearch/conf/kibana.yml:/usr/share/kibana/config/kibana.yml
+    environment:
+      - elasticsearch.hosts=http://es-master:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=DsgxUm3GUuWU0qp15Hqa
+    depends_on:
+      - es-master
+      - es-slave1
+      - es-slave2
+
+  metricbeat:
+    container_name: metricbeat
+    hostname: metricbeat
+    networks:
+      - flankx
+    user: root
+    image: docker.elastic.co/beats/metricbeat:7.17.12
+    restart: always
+    volumes:
+      - /root/elasticsearch/conf/metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+    #environment:
+    depends_on:
+      - kibana
+      - es-master
+      - es-slave1
+      - es-slave2
+networks:
+  flankx:
+    external: true
