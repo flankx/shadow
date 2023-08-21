@@ -60,11 +60,18 @@ spring:
       schema-locations: classpath:db/schema.sql
       data-locations: classpath:db/data.sql
       continue-on-error: true
+
+  elasticsearch:
+    uris: ${ES_HOSTS:}
+    username: ${ES_USERNAME:}
+    password: ${ES_PASSWORD:}
+
 logging:
   level:
     com.github.shadow.mapper: debug
 server:
   port: 8080
+  shutdown: graceful
   # 配置Tomcat的访问日志格式化输出
   #  tomcat:
   #    accesslog:
