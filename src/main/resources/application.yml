@@ -77,19 +77,26 @@ mybatis-plus:
 
 knife4j:
   enable: true
-  openapi:
-    title: 接口文档
-    description: "描述信息"
-#    email: xiaoymin@foxmail.com
-#    concat: 八一菜刀
-#    url: https://docs.xiaominfo.com
-#    version: v4.0
-#    license: Apache 2.0
-#    license-url: https://stackoverflow.com/
-#    terms-of-service-url: https://stackoverflow.com/
-#    group:
-#      test1:
-#        group-name: 分组名称
-#        api-rule: package
-#        api-rule-resources:
-#          - com.knife4j.demo.new3
+  setting:
+    enable-swagger-models: true
+    swagger-model-name: 实体类列表
+    enable-document-manage: true
+    enable-after-script: true
+    enable-host: false
+    enable-host-text:
+    enable-request-cache: true
+    enable-filter-multipart-apis: false
+    enable-filter-multipart-api-method-type: POST
+    language: zh-CN
+    enable-footer: false
+    enable-footer-custom: true
+    footer-custom-content: Copyright © 2023 flankx All Rights Reserved
+    enable-debug: true
+    enable-open-api: false
+    enable-group: true
+  cors: false
+  production: false
+  basic:
+    enable: false
+    username: admin
+    password: admin

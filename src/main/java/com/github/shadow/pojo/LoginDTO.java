@@ -3,7 +3,7 @@ package com.github.shadow.pojo;
 import lombok.Data;
 
 @Data
-public class LoginForm {
+public class LoginDTO {
 
     private String username;
 

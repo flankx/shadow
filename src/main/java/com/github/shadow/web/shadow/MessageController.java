@@ -1,4 +1,4 @@
-package com.github.shadow.web.controller;
+package com.github.shadow.web.shadow;
 
 import java.text.MessageFormat;
 import java.time.ZonedDateTime;

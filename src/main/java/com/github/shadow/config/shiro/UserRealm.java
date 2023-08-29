@@ -2,7 +2,6 @@ package com.github.shadow.config.shiro;
 
 import java.util.Arrays;
 
-import com.github.shadow.service.ISysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.shadow.entity.SysUser;
+import com.github.shadow.service.ISysUserService;
 
 public class UserRealm extends AuthorizingRealm {
 

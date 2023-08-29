@@ -1,29 +1,29 @@
-package com.github.shadow.web.controller;
+package com.github.shadow.web.auth;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import io.swagger.annotations.Api;
+import springfox.documentation.annotations.ApiIgnore;
 
-@Api(value = "页面控制器", tags = "页面控制接口")
+@ApiIgnore
 @Controller
 public class IndexController {
+
     @GetMapping(value = "/")
     public String index() {
-        return "redirect:/login";
+        return "redirect:/index";
     }
 
-    @GetMapping(value = "/home")
+    @GetMapping(value = "/index")
     public String home() {
-        return "/home/index";
+        return "/index";
     }
 
     @GetMapping(value = "/login")
-    public String login(Model model) {
-        return "login/login";
+    public String login() {
+        return "/login";
     }
 
     @GetMapping(value = "/logout")

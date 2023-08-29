@@ -1,4 +1,4 @@
-package com.github.shadow.web.response;
+package com.github.shadow.exception;
 
 public interface ErrorCode {
     /**

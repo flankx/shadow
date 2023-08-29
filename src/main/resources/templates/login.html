@@ -100,7 +100,7 @@
             // 此处可执行 Ajax 等操作
             $.ajax({
                 type: "post",
-                url: "/api/login",
+                url: "/login",
                 headers: {
                     'content-type': 'application/json'
                 },
@@ -108,7 +108,7 @@
                 data: JSON.stringify(field),
                 success: function (r) {
                     if (r.code === 200) {
-                        location.href = '/home';
+                        location.href = '/index';
                     } else {
                         layer.open({
                             icon: '5',
