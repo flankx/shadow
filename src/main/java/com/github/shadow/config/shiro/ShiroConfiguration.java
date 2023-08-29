@@ -41,11 +41,13 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/", "anon");
 //        filterChainDefinitionMap.put("/doc.html/**", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
+        filterChainDefinitionMap.put("/layui/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/login/submit", "anon");
-        filterChainDefinitionMap.put("/login/logout", "anon");
+        filterChainDefinitionMap.put("/api/login", "anon");
+        filterChainDefinitionMap.put("/logout", "anon");
         filterChainDefinitionMap.put("/error", "anon");
         filterChainDefinitionMap.put("/**", "authc");
 
