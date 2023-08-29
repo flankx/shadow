@@ -1,4 +1,4 @@
-package com.github.shadow.web.auth;
+package com.github.shadow.web.index;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -36,4 +36,15 @@ public class IndexController {
         }
         return "redirect:/login";
     }
+
+    @GetMapping(value = "/swagger")
+    public String swagger() {
+        return "redirect:/doc.html";
+    }
+
+    @GetMapping(value = "/druid")
+    public String druid() {
+        return "redirect:/druid/index.html";
+    }
+
 }
