@@ -44,7 +44,7 @@ public class RequestLogAspect {
             return retVal;
         } finally {
             stopWatch.stop();
-            logger.info("<=== {}: {} ({} ms)", requestMethod, requestUrl, stopWatch.getTotalTimeMillis());
+            logger.info("===Response END=== {}: {} ({} ms)", requestMethod, requestUrl, stopWatch.getTotalTimeMillis());
         }
 
     }
