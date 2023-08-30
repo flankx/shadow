@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.code.kaptcha.Producer;
 
 @Controller
-public class KcaptchaController {
+public class kaptchaController {
 
     @Autowired
     @Qualifier(value = "captchaProducer")
