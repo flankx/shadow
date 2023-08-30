@@ -1,4 +1,4 @@
-package com.github.shadow.config.websocket;
+package com.github.shadow.config;
 
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;

@@ -1,4 +1,4 @@
-package com.github.shadow.config.shiro;
+package com.github.shadow.shiro;
 
 import java.util.Arrays;
 

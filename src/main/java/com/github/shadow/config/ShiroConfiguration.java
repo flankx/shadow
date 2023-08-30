@@ -1,8 +1,9 @@
-package com.github.shadow.config.shiro;
+package com.github.shadow.config;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.github.shadow.shiro.UserRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -39,6 +40,7 @@ public class ShiroConfiguration {
         /* 过滤链定义，从上向下顺序执行，一般将 / ** 放在最为下边:这是一个坑呢，一不小心代码就不好使了;
          authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问 */
         filterChainDefinitionMap.put("/", "anon");
+        filterChainDefinitionMap.put("/kcaptcha", "anon");
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/layui/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
