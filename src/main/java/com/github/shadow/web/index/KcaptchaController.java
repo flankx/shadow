@@ -23,8 +23,8 @@ public class KcaptchaController {
     @Qualifier(value = "captchaProducer")
     private Producer captchaProducer;
 
-    @GetMapping(value = "/kcaptcha")
-    public ModelAndView kcaptcha(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping(value = "/kaptcha")
+    public ModelAndView kaptcha(HttpServletRequest request, HttpServletResponse response) {
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             response.setDateHeader("Expires", 0);
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
