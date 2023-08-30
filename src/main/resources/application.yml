@@ -19,7 +19,6 @@ spring:
     restart:
       enabled: true  #设置开启热部署
 
-
   thymeleaf:
     cache: false #使用Thymeleaf模板引擎，关闭缓存
     mode: HTML

@@ -25,11 +25,6 @@ public class SwaggerConfig {
     private final OpenApiExtensionResolver openApiExtensionResolver;
 
     @Bean
-    public Docket authDocket() {
-        return docket("授权模块", Collections.singletonList("com.github.shadow.web" + ".auth"));
-    }
-
-    @Bean
     public Docket shadowDocket() {
         return docket("管理模块", Collections.singletonList("com.github.shadow.web" + ".shadow"));
     }
@@ -40,9 +35,8 @@ public class SwaggerConfig {
     }
 
     private Docket docket(String groupName, List<String> basePackages) {
-        return new Docket(DocumentationType.SWAGGER_2).groupName(groupName).apiInfo(apiInfo())
-            // .ignoredParameterTypes(BladeUser.class)
-            .select().apis(SwaggerUtil.basePackages(basePackages)).paths(PathSelectors.any())
+        return new Docket(DocumentationType.SWAGGER_2).groupName(groupName).apiInfo(apiInfo()).select()
+            .apis(SwaggerUtil.basePackages(basePackages)).paths(PathSelectors.any())
             // .securityContexts(securityContexts()).securitySchemes(securitySchemas())
             .build().extensions(openApiExtensionResolver.buildExtensions(groupName));
     }
