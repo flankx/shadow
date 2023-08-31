@@ -7,22 +7,29 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.shadow.entity.SysUser;
 import com.github.shadow.pojo.LoginDTO;
 import com.github.shadow.pojo.R;
+import com.github.shadow.service.ISysUserService;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
+@Slf4j
 @ApiIgnore
 @Controller
-@Slf4j
+@AllArgsConstructor
 public class IndexController {
+
+    private final ISysUserService sysUserService;
 
     @GetMapping(value = "/")
     public String index() {
@@ -30,7 +37,13 @@ public class IndexController {
     }
 
     @GetMapping(value = "/index")
-    public String home() {
+    public String home(ModelMap modelMap) {
+        SysUser user = null;
+        Subject subject = SecurityUtils.getSubject();
+        if (subject != null) {
+            user = (SysUser)subject.getSession().getAttribute("userInfo");
+        }
+        modelMap.put("user", user);
         return "/index";
     }
 

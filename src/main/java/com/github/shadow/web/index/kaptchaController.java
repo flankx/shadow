@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.code.kaptcha.Producer;
 
@@ -24,7 +23,7 @@ public class kaptchaController {
     private Producer captchaProducer;
 
     @GetMapping(value = "/kaptcha")
-    public ModelAndView kaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public void kaptcha(HttpServletRequest request, HttpServletResponse response) {
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             response.setDateHeader("Expires", 0);
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -38,6 +37,5 @@ public class kaptchaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 }

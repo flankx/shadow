@@ -11,35 +11,59 @@
 <body>
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
+        <!-- 头部区域 -->
         <div class="layui-logo layui-hide-xs layui-bg-black">后台管理系统</div>
-        <!-- 头部区域（可配合layui 已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <!-- 移动端显示 -->
-            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
-                <i class="layui-icon layui-icon-spread-left"></i>
+            <!-- 侧边伸缩 -->
+            <li class="layui-nav-item layadmin-flexible" lay-unselect="">
+                <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                    <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                </a>
             </li>
-            <li class="layui-nav-item layui-hide-xs"><a href="javascript:;">nav 1</a></li>
-            <li class="layui-nav-item layui-hide-xs"><a href="javascript:;">nav 2</a></li>
-            <li class="layui-nav-item layui-hide-xs"><a href="javascript:;">nav 3</a></li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">nav groups</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">menu 11</a></dd>
-                    <dd><a href="javascript:;">menu 22</a></dd>
-                    <dd><a href="javascript:;">menu 33</a></dd>
-                </dl>
+            <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+                <a href="https://flankx.github.io#/" target="_blank" title="前台">
+                    <i class="layui-icon layui-icon-website"></i>
+                </a>
             </li>
+            <li class="layui-nav-item" lay-unselect="">
+                <a href="javascript:;" layadmin-event="refresh" title="刷新">
+                    <i class="layui-icon layui-icon-refresh-3"></i>
+                </a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+                <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search"
+                       layadmin-event="serach" lay-action="template/search/keywords=">
+            </li>
+            <span class="layui-nav-bar"></span>
         </ul>
         <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item layui-hide layui-show-sm-inline-block">
+            <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+                <a href="javascript:;" layadmin-event="note">
+                    <i class="layui-icon layui-icon-note"></i>
+                </a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+                <a href="javascript:;" layadmin-event="theme">
+                    <i class="layui-icon layui-icon-theme"></i>
+                </a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+                <a href="javascript:;" layadmin-event="fullscreen">
+                    <i class="layui-icon layui-icon-screen-full"></i>
+                </a>
+            </li>
+            <li class="layui-nav-item" lay-unselect="">
                 <a href="javascript:;">
-                    <img src="//unpkg.com/outeres@0.0.10/img/layui/icon-v2.png" class="layui-nav-img">
-                    tester
+                    <i th:if="${#strings.isEmpty(user.avatar)}" class="layui-icon layui-icon-user"></i>
+                </a>
+                <a href="javascript:;">
+                    <img th:if="${not #strings.isEmpty(user.avatar)}" th:src="@{${user.avatar}}" alt="avatar"
+                         class="layui-nav-img">
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">Your Profile</a></dd>
-                    <dd><a href="javascript:;">Settings</a></dd>
-                    <dd><a href="javascript:;">Sign out</a></dd>
+                    <dd><a href="javascript:;">个人资料</a></dd>
+                    <dd><a href="javascript:;">修改密码</a></dd>
+                    <dd><a th:href="@{logout}">登出</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
@@ -92,9 +116,9 @@
             <br><br>
         </div>
     </div>
-    <div class="layui-footer">
+    <div class="layui-footer" style="text-align: center">
         <!-- 底部固定区域 -->
-        底部固定区域
+        <strong>Copyright © 2023 flankx All Rights Reserved</strong>
     </div>
 </div>
 
