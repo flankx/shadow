@@ -27,7 +27,7 @@ spring:
       stat-view-servlet:
         enabled: true
         login-username: admin
-        login-password: kxGaU2iy
+        login-password: admin
         reset-enable: false
         url-pattern: /druid/*
       # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
@@ -51,3 +51,14 @@ spring:
         session-stat-enable: false
         session-stat-max-count: 1000
         url-pattern: /*
+      use-global-data-source-stat: true
+      # 插件
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          merge-sql: true
+          slow-sql-millis: 1000
+        wall:
+          config:
+            multi-statement-allow: true
