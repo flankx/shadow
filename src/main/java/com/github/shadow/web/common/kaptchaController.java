@@ -1,4 +1,4 @@
-package com.github.shadow.web.index;
+package com.github.shadow.web.common;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -10,19 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.google.code.kaptcha.Producer;
 
-@Controller
+@RestController
+@RequestMapping("/kaptcha")
 public class kaptchaController {
 
     @Autowired
     @Qualifier(value = "captchaProducer")
     private Producer captchaProducer;
 
-    @GetMapping(value = "/kaptcha")
+    @GetMapping
     public void kaptcha(HttpServletRequest request, HttpServletResponse response) {
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             response.setDateHeader("Expires", 0);

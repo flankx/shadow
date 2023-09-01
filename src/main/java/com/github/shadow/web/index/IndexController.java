@@ -13,23 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.shadow.entity.SysUser;
 import com.github.shadow.pojo.LoginDTO;
 import com.github.shadow.pojo.R;
-import com.github.shadow.service.ISysUserService;
+import com.github.shadow.util.ShiroUtils;
 
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Slf4j
 @ApiIgnore
 @Controller
-@AllArgsConstructor
 public class IndexController {
-
-    private final ISysUserService sysUserService;
 
     @GetMapping(value = "/")
     public String index() {
@@ -38,12 +33,7 @@ public class IndexController {
 
     @GetMapping(value = "/index")
     public String home(ModelMap modelMap) {
-        SysUser user = null;
-        Subject subject = SecurityUtils.getSubject();
-        if (subject != null) {
-            user = (SysUser)subject.getSession().getAttribute("userInfo");
-        }
-        modelMap.put("user", user);
+        modelMap.put("user", ShiroUtils.getCurrentUser());
         return "/index";
     }
 
@@ -85,6 +75,12 @@ public class IndexController {
             e.printStackTrace();
         }
         return "redirect:/login";
+    }
+
+    @GetMapping("/profile")
+    public String profile(ModelMap modelMap) {
+        modelMap.put("user", ShiroUtils.getCurrentUser());
+        return "/profile";
     }
 
     @GetMapping(value = "/swagger")
