@@ -7,10 +7,12 @@ layui.use(['element', 'layer', 'util'], function () {
 
     //头部事件
     util.event('lay-header-event', {
-        menuLeft: function (othis) { // 左侧菜单事件
+        // 左侧菜单事件
+        menuLeft: function (othis) {
             layer.msg('展开左侧菜单的操作', {icon: 0});
         },
-        menuRight: function () {  // 右侧菜单事件
+        // 右侧菜单事件
+        menuRight: function () {
             layer.open({
                 type: 1,
                 title: '更多',
@@ -21,7 +23,49 @@ layui.use(['element', 'layer', 'util'], function () {
                 shadeClose: true,
                 scrollbar: false
             });
+        },
+        // 侧边伸缩
+        flexible: function () {
+
+        },
+        // 刷新
+        refresh: function () {
+
+        },
+        // 标签
+        note: function () {
+
+        },
+        // 皮肤
+        theme: function () {
+
+        },
+        // 全屏显示
+        fullscreen: function () {
+            var doc = document.documentElement;
+            if ($(document.body).hasClass("full-screen")) {
+                $(document.body).removeClass("full-screen");
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            } else {
+                $(document.body).addClass("full-screen");
+                if (doc.requestFullscreen) {
+                    doc.requestFullscreen();
+                } else if (doc.mozRequestFullScreen) {
+                    doc.mozRequestFullScreen();
+                } else if (doc.webkitRequestFullscreen) {
+                    doc.webkitRequestFullscreen();
+                } else if (doc.msRequestFullscreen) {
+                    doc.msRequestFullscreen();
+                }
+            }
         }
+
     });
 
     // a 标签 点击事件
