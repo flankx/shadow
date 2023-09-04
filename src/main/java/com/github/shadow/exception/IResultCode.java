@@ -1,6 +1,6 @@
 package com.github.shadow.exception;
 
-public interface ErrorCode {
+public interface IResultCode {
     /**
      * Gets code.
      *

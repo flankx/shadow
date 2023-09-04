@@ -26,7 +26,7 @@ public class ToolController {
         Map<String, Object> source = request.getSource();
         String expression = request.getExpression();
         Jexl3Utils.checkExpression(new ArrayList<>(source.keySet()), expression);
-        return R.success(Jexl3Utils.mathEvaluate(source, expression));
+        return R.data(Jexl3Utils.mathEvaluate(source, expression));
     }
 
 }
