@@ -11,6 +11,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.shadow.entity.SysUser;
 import com.github.shadow.service.ISysUserService;
@@ -24,10 +25,12 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         Session session = SecurityUtils.getSubject().getSession();
         // 查询用户的权限
-        SysUser user = (SysUser)session.getAttribute("userInfo");
+        String permissions = (String)session.getAttribute("permissions");
         // 为当前用户设置角色和权限
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.addStringPermissions(Arrays.asList(user.getPermissions().split(",")));
+        if (StringUtils.isNotBlank(permissions)) {
+            authorizationInfo.addStringPermissions(Arrays.asList(permissions.split(",")));
+        }
         return authorizationInfo;
     }
 
@@ -53,6 +56,7 @@ public class UserRealm extends AuthorizingRealm {
         // 将用户信息放入session中
         SecurityUtils.getSubject().getSession().setAttribute("userId", user.getId());
         SecurityUtils.getSubject().getSession().setAttribute("userName", user.getUserName());
+        SecurityUtils.getSubject().getSession().setAttribute("permissions", user.getPermissions());
         return authenticationInfo;
     }
 }
