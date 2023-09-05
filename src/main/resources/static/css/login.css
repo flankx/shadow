@@ -1,0 +1,34 @@
+.sign-in {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-image:url('https://bing.immmmm.com/img/bing?region=zh-CN&type=image');
+    background-position:center;
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+.layui-form {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
+.demo-login-header {
+    text-align: center;
+}
+
+.demo-login-container {
+    width: 320px;
+    margin: 21px auto 0;
+}
+
+.demo-login-other .layui-icon {
+    position: relative;
+    display: inline-block;
+    margin: 0 2px;
+    top: 2px;
+    font-size: 26px;
+}

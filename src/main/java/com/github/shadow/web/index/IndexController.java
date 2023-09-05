@@ -44,6 +44,11 @@ public class IndexController {
         return "/index";
     }
 
+    @GetMapping(value = "/main")
+    public String main() {
+        return "/main";
+    }
+
     @GetMapping(value = "/login")
     public String login() {
         return "/login";

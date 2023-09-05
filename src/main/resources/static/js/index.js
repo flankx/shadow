@@ -30,7 +30,7 @@ layui.use(['element', 'layer', 'util'], function () {
         },
         // 刷新
         refresh: function () {
-
+            window.location.reload();
         },
         // 标签
         note: function () {
@@ -76,7 +76,7 @@ layui.use(['element', 'layer', 'util'], function () {
         if ($node.length === 0) {
             element.tabAdd('test-handle', {
                 title: title,
-                content: "<iframe frameborder='0' width='100%' height='100%' scrolling='auto' src='" + id + "' class='layadmin-iframe'></iframe>",
+                content: "<iframe frameborder='0' scrolling='auto' src='" + id + "' class='layaui-iframe'></iframe>",
                 id: id,
                 change: true // 是否添加完毕后即自动切换
             })
