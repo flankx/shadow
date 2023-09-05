@@ -7,104 +7,148 @@
     <link href="../static/layui/css/layui.css" th:href="@{/layui/css/layui.css}" rel="stylesheet">
 </head>
 <body>
-<form class="layui-form" action="">
-    <div class="layui-form-item">
-        <label class="layui-form-label">用户标识</label>
-        <div class="layui-input-inline">
-            <input type="text" name="id" th:value="${user.id}" readonly="" class="layui-input">
-        </div>
-        <div class="layui-form-mid layui-word-aux">不可修改。用户唯一标识</div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">角色信息</label>
-        <div class="layui-input-inline">
-            <select name="role" lay-verify="">
-                <option value="1" selected="">超级管理员</option>
-                <option value="2" disabled="">普通管理员</option>
-                <option value="3" disabled="">审核员</option>
-                <option value="4" disabled="">编辑人员</option>
-            </select>
-            <div class="layui-unselect layui-form-select">
-                <div class="layui-select-title"><input type="text" placeholder="请选择" value="超级管理员" readonly=""
-                                                       class="layui-input layui-unselect"><i class="layui-edge"></i>
+<div class="layui-tab layui-tab-card" lay-filter="edit-profile">
+    <ul class="layui-tab-title">
+        <li lay-id="profile" class="layui-this">个人资料</li>
+        <li lay-id="pass">修改密码</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户标识</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="id" th:value="${user.id}" readonly="" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">不可修改。用户唯一标识</div>
                 </div>
-                <dl class="layui-anim layui-anim-upbit">
-                    <dd lay-value="1" class="layui-this">超级管理员</dd>
-                    <dd lay-value="2" class=" layui-disabled">普通管理员</dd>
-                    <dd lay-value="3" class=" layui-disabled">审核员</dd>
-                    <dd lay-value="4" class=" layui-disabled">编辑人员</dd>
-                </dl>
-            </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">角色信息</label>
+                    <div class="layui-input-inline">
+                        <select name="role" lay-verify="">
+                            <option value="1" selected="">超级管理员</option>
+                            <option value="2" disabled="">普通管理员</option>
+                            <option value="3" disabled="">审核员</option>
+                            <option value="4" disabled="">编辑人员</option>
+                        </select>
+                        <div class="layui-unselect layui-form-select">
+                            <div class="layui-select-title">
+                                <input type="text" placeholder="请选择" value="超级管理员" readonly=""
+                                       class="layui-input layui-unselect">
+                                <i class="layui-edge"></i>
+                            </div>
+                            <dl class="layui-anim layui-anim-upbit">
+                                <dd lay-value="1" class="layui-this">超级管理员</dd>
+                                <dd lay-value="2" class=" layui-disabled">普通管理员</dd>
+                                <dd lay-value="3" class=" layui-disabled">审核员</dd>
+                                <dd lay-value="4" class=" layui-disabled">编辑人员</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="userName" th:value="${user.userName}" readonly="" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户昵称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="nickName" th:value="${user.nickName}" lay-verify="nickname"
+                               autocomplete="off" placeholder="请输入昵称"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sexType" value="1" title="男" th:checked="${user.sexType} eq '1'">
+                        <input type="radio" name="sexType" value="0" title="女" th:checked="${user.sexType} eq '0'">
+                        <input type="radio" name="sexType" value="-1" title="禁用" disabled>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">头像</label>
+                    <div class="layui-input-inline">
+                        <i th:if="${#strings.isEmpty(user.avatar)}" class="layui-icon layui-icon-user"></i>
+                    </div>
+                    <div class="layui-input-inline">
+                        <img th:if="${not #strings.isEmpty(user.avatar)}" th:src="@{${user.avatar}}" alt="avatar"
+                             class="layui-nav-img">
+                    </div>
+                    <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                        <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                            <i class="layui-icon"></i>上传图片
+                        </button>
+                        <input class="layui-upload-file" type="file" accept="" name="avatar">
+                        <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="phoneNo" th:value="${user.phoneNo}" lay-verify="phone"
+                               autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="email" th:value="${user.email}" lay-verify="email" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block"><textarea name="extra" placeholder="请输入内容" th:text="${user.extra}"
+                                                             class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="setmyinfo">确认修改</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>
+        <div class="layui-tab-item">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">当前密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="oldPassword" lay-verify="required" lay-vertype="tips"
+                               lay-affix="eye" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">新密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="password" lay-verify="pass" lay-vertype="tips" lay-affix="eye"
+                               autocomplete="off" id="LAY_password" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">确认新密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="confirmPassword" lay-verify="repass" lay-vertype="tips"
+                               lay-affix="eye" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="setmypass">确认修改</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">用户名称</label>
-        <div class="layui-input-inline">
-            <input type="text" name="userName" th:value="${user.userName}" readonly="" class="layui-input">
-        </div>
-        <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">用户昵称</label>
-        <div class="layui-input-inline">
-            <input type="text" name="nickName" th:value="${user.nickName}" lay-verify="nickname"
-                   autocomplete="off" placeholder="请输入昵称"
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">性别</label>
-        <div class="layui-input-block">
-            <input type="radio" name="sexType" value="1" title="男" th:checked="${user.sexType} eq '1'">
-            <input type="radio" name="sexType" value="0" title="女" th:checked="${user.sexType} eq '0'">
-            <input type="radio" name="sexType" value="-1" title="禁用" disabled>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">头像</label>
-        <div class="layui-input-inline">
-            <i th:if="${#strings.isEmpty(user.avatar)}" class="layui-icon layui-icon-user"></i>
-        </div>
-        <div class="layui-input-inline">
-            <img th:if="${not #strings.isEmpty(user.avatar)}" th:src="@{${user.avatar}}" alt="avatar"
-                 class="layui-nav-img">
-        </div>
-        <div class="layui-input-inline layui-btn-container" style="width: auto;">
-            <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
-                <i class="layui-icon"></i>上传图片
-            </button>
-            <input class="layui-upload-file" type="file" accept="" name="avatar">
-            <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">手机</label>
-        <div class="layui-input-inline">
-            <input type="text" name="phoneNo" th:value="${user.phoneNo}" lay-verify="phone" autocomplete="off"
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
-        <div class="layui-input-inline">
-            <input type="text" name="email" th:value="${user.email}" lay-verify="email" autocomplete="off"
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">备注</label>
-        <div class="layui-input-block"><textarea name="extra" placeholder="请输入内容" th:text="${user.extra}"
-                                                 class="layui-textarea"></textarea>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn" lay-submit="" lay-filter="setmyinfo">确认修改</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
-        </div>
-    </div>
-</form>
+</div>
 <script src="../static/layui/layui.js" th:src="@{/layui/layui.js}"></script>
 <script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
 <script src="../static/js/profile.js" th:src="@{/js/profile.js}"></script>

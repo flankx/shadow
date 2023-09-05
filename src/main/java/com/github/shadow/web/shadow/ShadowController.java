@@ -64,7 +64,7 @@ public class ShadowController {
         userData.setBirthDay(LocalDate.parse("2007-12-24"));
         userData.setEmail("laola@gmail.com");
         userData.setPhoneNo("+90666666");
-        logger.info("insert into table , data {}", JsonUtils.toJsonString(userData));
+        logger.info("insert into table , data {}", JsonUtils.toJson(userData));
 
         userDataService.save(userData);
 
