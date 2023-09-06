@@ -17,6 +17,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<shiro-spring.version>1.12.0</shiro-spring.version>
+		<shiro-ehcache.version>1.12.0</shiro-ehcache.version>
+		<thymeleaf-extras-shiro.version>2.1.0</thymeleaf-extras-shiro.version>
 		<mybatis-plus.version>3.5.3.1</mybatis-plus.version>
 		<oshi.version>6.4.4</oshi.version>
 		<jna.version>5.13.0</jna.version>
@@ -72,11 +74,6 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-			<version>${shiro-spring.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -89,6 +86,25 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro-spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>${shiro-ehcache.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.theborakompanioni</groupId>
+			<artifactId>thymeleaf-extras-shiro</artifactId>
+			<version>${thymeleaf-extras-shiro.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
@@ -121,10 +137,6 @@
 			<version>${knife4j-openapi2.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>${druid.version}</version>
@@ -134,7 +146,6 @@
 			<artifactId>commons-jexl3</artifactId>
 			<version>${jexl.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.penggle</groupId>
 			<artifactId>kaptcha</artifactId>

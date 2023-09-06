@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -40,7 +41,12 @@ public class SysUser implements Serializable {
     private String userName;
 
     @ApiModelProperty("用户密码")
+    @JsonIgnore
     private String password;
+
+    @ApiModelProperty("盐值")
+    @JsonIgnore
+    private String salt;
 
     @ApiModelProperty("用户昵称")
     private String nickName;
@@ -56,9 +62,6 @@ public class SysUser implements Serializable {
 
     @ApiModelProperty("手机")
     private String phoneNo;
-
-    @ApiModelProperty("是否删除")
-    private Integer deleteStatus;
 
     @ApiModelProperty("权限列表")
     private String permissions;

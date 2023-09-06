@@ -3,6 +3,7 @@ package com.github.shadow.config;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.github.shadow.shiro.UserRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -47,7 +48,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/user/**", "anon");
         filterChainDefinitionMap.put("/logout", "anon");
         filterChainDefinitionMap.put("/error", "anon");
         filterChainDefinitionMap.put("/**", "authc");
@@ -117,6 +117,14 @@ public class ShiroConfig {
             new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager());
         return authorizationAttributeSourceAdvisor;
+    }
+
+    /**
+     * 配置ShiroDialect,用于thymeleaf和shiro标签配合使用
+     */
+    @Bean
+    public ShiroDialect getShiroDialect(){
+        return new ShiroDialect();
     }
 
 }

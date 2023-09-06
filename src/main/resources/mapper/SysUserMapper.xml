@@ -12,7 +12,7 @@
         <result column="avatar" property="avatar"/>
         <result column="email" property="email"/>
         <result column="phone_no" property="phoneNo"/>
-        <result column="delete_status" property="deleteStatus"/>
+        <result column="salt" property="salt"/>
         <result column="permissions" property="permissions"/>
         <result column="extra" property="extra"/>
         <result column="create_time" property="createTime"/>

@@ -1,7 +1,7 @@
 package com.github.shadow.web.system;
 
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +13,7 @@ import com.github.shadow.service.ISysUserService;
 import com.github.shadow.util.ShiroUtils;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -48,13 +49,18 @@ public class ProfileController {
     public R updatePassword(@RequestBody EditPassDTO editPass) {
         Integer userId = ShiroUtils.getCurrentUser();
         SysUser user = sysUserService.getById(userId);
-        if (!user.getPassword().equals(editPass.getOldPassword())) {
+        if (user == null) {
+            return R.fail("用户不存在！");
+        }
+        String oldPass = new Md5Hash(editPass.getOldPassword(), user.getSalt()).toHex();
+        String newPass = new Md5Hash(editPass.getPassword(), user.getSalt()).toHex();
+        if (!user.getPassword().equals(oldPass)) {
             return R.fail("修改密码失败，旧密码错误");
         }
-        if (user.getPassword().equals(editPass.getPassword())) {
+        if (user.getPassword().equals(newPass)) {
             return R.fail("新密码不能与旧密码相同");
         }
-        user.setPassword(editPass.getPassword());
+        user.setPassword(newPass);
         return R.status(sysUserService.updateById(user));
     }
 
