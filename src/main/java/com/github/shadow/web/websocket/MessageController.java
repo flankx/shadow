@@ -1,4 +1,4 @@
-package com.github.shadow.web.shadow;
+package com.github.shadow.web.websocket;
 
 import java.text.MessageFormat;
 import java.time.ZonedDateTime;
@@ -10,10 +10,13 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 /**
  * Spring websocket demo
  */
 @Controller
+@ApiIgnore
 public class MessageController {
 
     @MessageMapping("/hello")

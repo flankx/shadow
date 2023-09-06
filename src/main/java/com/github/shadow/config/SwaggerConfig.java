@@ -26,7 +26,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket shadowDocket() {
-        return docket("管理模块", Collections.singletonList("com.github.shadow.web" + ".shadow"));
+        return docket("系统模块", Collections.singletonList("com.github.shadow.web" + ".system"));
     }
 
     @Bean

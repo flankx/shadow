@@ -1,4 +1,4 @@
-package com.github.shadow.web.common;
+package com.github.shadow.web.system;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.code.kaptcha.Producer;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/kaptcha")
+@Api(value = "验证码", tags = "验证码接口")
 public class kaptchaController {
 
     @Autowired
@@ -25,6 +29,7 @@ public class kaptchaController {
     private Producer captchaProducer;
 
     @GetMapping
+    @ApiOperation(value = "获取字符验证码")
     public void kaptcha(HttpServletRequest request, HttpServletResponse response) {
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             response.setDateHeader("Expires", 0);

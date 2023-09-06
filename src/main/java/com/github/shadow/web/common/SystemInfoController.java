@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.shadow.pojo.R;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -14,8 +16,8 @@ public class SystemInfoController {
 
     @GetMapping("info")
     @ApiOperation(value = "信息")
-    public Object info() {
-        return null;
+    public R info() {
+        return R.status(true);
     }
 
 }

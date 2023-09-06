@@ -1,5 +1,6 @@
-package com.github.shadow.web.index;
+package com.github.shadow.web.system;
 
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,15 +12,19 @@ import com.github.shadow.pojo.R;
 import com.github.shadow.service.ISysUserService;
 import com.github.shadow.util.ShiroUtils;
 
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 @RequestMapping("/profile")
 @AllArgsConstructor
+@Api(value = "个人资料", tags = "个人资料接口")
 public class ProfileController {
 
     private ISysUserService sysUserService;
 
+    @ApiIgnore
     @GetMapping
     public String profile(ModelMap modelMap) {
         Integer userId = ShiroUtils.getCurrentUser();
@@ -27,6 +32,7 @@ public class ProfileController {
         return "/profile";
     }
 
+    @ApiOperation(value = "更新个人资料")
     @PostMapping
     @ResponseBody
     public R updateProfile(@RequestBody SysUser user) {
@@ -36,6 +42,7 @@ public class ProfileController {
         return R.status(sysUserService.updateById(user));
     }
 
+    @ApiOperation(value = "修改密码")
     @PostMapping("/editPassword")
     @ResponseBody
     public R updatePassword(@RequestBody EditPassDTO editPass) {

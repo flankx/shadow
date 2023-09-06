@@ -22,7 +22,7 @@ public class ToolController {
 
     @PostMapping("/math/evaluate")
     @ApiOperation(value = "函数计算", notes = "传入请求参数")
-    public R<Object> evaluate(@RequestBody EvaluateRequest request) {
+    public R evaluate(@RequestBody EvaluateRequest request) {
         Map<String, Object> source = request.getSource();
         String expression = request.getExpression();
         Jexl3Utils.checkExpression(new ArrayList<>(source.keySet()), expression);
