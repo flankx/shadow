@@ -1,6 +1,7 @@
 layui.use(function () {
     var form = layui.form;
     var layer = layui.layer;
+    var util = layui.util;
     var $ = layui.$;
     var element = layui.element;
 
@@ -71,6 +72,34 @@ layui.use(function () {
             }
         });
         return false; // 阻止默认 form 跳转
+    });
+    // 头像预览
+    util.on('lay-on', {
+        // 左侧菜单事件
+        preview: function () {
+            $.ajax({
+                type: "get",
+                url: "/user/avatar",
+                success: function (r) {
+                    // 页面层
+                    layer.open({
+                        type: 1,// page 页面层，可同时存在多个层
+                        title: false, // 不显示标题
+                        area: ['300px', '300px'], // 宽高
+                        content: '<div style="text-align: center;"><img src="' + r + '" style="margin: 0 auto;" alt=""/></div>'
+                    });
+                },
+                error: function (msg) {
+                    layer.open({
+                        icon: '0',
+                        title: '服务器异常',
+                        content: msg
+                    });
+                }
+            });
+
+        },
+
     });
 
 });

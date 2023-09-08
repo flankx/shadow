@@ -1,5 +1,8 @@
 package com.github.shadow.service.impl;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +29,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public IPage<SysUser> userPage(UserPageRequest request) {
+        // 分页查询过滤头像和密码字段
+        List<String> excludeFields = Arrays.asList("password", "avatar");
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.select(SysUser.class, i -> !excludeFields.contains(i.getProperty()));
         if (StringUtils.isNotBlank(request.getNickName())) {
             queryWrapper.eq(SysUser::getNickName, request.getNickName());
         }
