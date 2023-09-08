@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `sys_user`
     `user_name`   varchar(64)  DEFAULT NULL COMMENT '用户名',
     `password`    varchar(64)  DEFAULT NULL COMMENT '密码',
     `nick_name`   varchar(64)  DEFAULT NULL COMMENT '昵称',
-    `avatar`      text COMMENT '用户头像',
+    `avatar`      mediumtext   DEFAULT NULL COMMENT '用户头像',
     `sex_type`    tinyint(4)   DEFAULT '-1' COMMENT '性别 0=女 1=男',
     `email`       varchar(64)  DEFAULT NULL COMMENT '邮箱',
     `phone_no`    varchar(32)  DEFAULT NULL COMMENT '手机',

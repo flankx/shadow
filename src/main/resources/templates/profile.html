@@ -72,19 +72,23 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">头像</label>
-                    <div class="layui-input-inline">
-                        <i th:if="${#strings.isEmpty(user.avatar)}" class="layui-icon layui-icon-user"></i>
-                    </div>
-                    <div class="layui-input-inline">
-                        <img th:if="${not #strings.isEmpty(user.avatar)}" th:src="@{${user.avatar}}" alt="avatar"
-                             class="layui-nav-img">
-                    </div>
                     <div class="layui-input-inline layui-btn-container" style="width: auto;">
-                        <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
-                            <i class="layui-icon"></i>上传图片
+                        <button type="button" class="layui-btn" id="ID-upload-demo-btn">
+                            <i class="layui-icon layui-icon-upload"></i> 上传头像
                         </button>
+                        <button type="button" class="layui-btn" lay-on="preview">
+                            <i class="layui-icon layui-icon-picture"></i> 查看原图
+                        </button>
+                        <div style="width: 132px;">
+                            <div class="layui-upload-list">
+                                <img class="layui-upload-img" th:src="@{${user.avatar}}" id="ID-upload-demo-img" style="width: 100%; height: 92px;">
+                                <div id="ID-upload-demo-text"></div>
+                            </div>
+                            <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="filter-demo">
+                                <div class="layui-progress-bar" lay-percent=""></div>
+                            </div>
+                        </div>
                         <input class="layui-upload-file" type="file" accept="" name="avatar">
-                        <button type="button" class="layui-btn layui-btn-primary" lay-on="preview">查看图片</button>
                     </div>
                 </div>
                 <div class="layui-form-item">

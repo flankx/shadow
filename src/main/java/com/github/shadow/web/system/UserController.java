@@ -1,5 +1,8 @@
 package com.github.shadow.web.system;
 
+import java.io.IOException;
+import java.util.Base64;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,10 +53,23 @@ public class UserController {
     @PostMapping("/uploadAvatar")
     @ResponseBody
     public R uploadAvatar(MultipartFile file) {
-        SysUser user = sysUserService.getOne(
-            Wrappers.<SysUser>lambdaQuery().select(SysUser::getAvatar).eq(SysUser::getId, ShiroUtils.getCurrentUser()));
-        // TODO
-        return R.status(true);
+        SysUser user = sysUserService.getOne(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId, SysUser::getAvatar)
+            .eq(SysUser::getId, ShiroUtils.getCurrentUser()));
+        if (user == null) {
+            return R.fail("用户不存在或者未登录！");
+        }
+        if (file == null || file.isEmpty()) {
+            return R.fail("图片不能为空！");
+        }
+        try {
+            String formatStr = String.format("data:%s;base64,%s", file.getContentType(),
+                Base64.getEncoder().encodeToString(file.getBytes()));
+            user.setAvatar(formatStr);
+            return R.status(sysUserService.updateById(user));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return R.status(false);
     }
 
     @ApiOperation(value = "用户详情")
