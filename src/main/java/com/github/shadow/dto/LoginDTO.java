@@ -1,4 +1,4 @@
-package com.github.shadow.pojo;
+package com.github.shadow.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

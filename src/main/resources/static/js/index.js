@@ -7,7 +7,7 @@ layui.use(['element', 'layer', 'util'], function () {
 
     //头部事件
     util.event('lay-header-event', {
-        // 左侧菜单事件
+        // 左侧菜单事件 - 侧边伸缩
         menuLeft: function (othis) {
             layer.msg('展开左侧菜单的操作', {icon: 0});
         },
@@ -23,10 +23,6 @@ layui.use(['element', 'layer', 'util'], function () {
                 shadeClose: true,
                 scrollbar: false
             });
-        },
-        // 侧边伸缩
-        flexible: function () {
-
         },
         // 刷新
         refresh: function () {

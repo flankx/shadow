@@ -19,7 +19,7 @@
         <ul class="layui-nav layui-layout-left">
             <!-- 侧边伸缩 -->
             <li class="layui-nav-item layadmin-flexible" lay-unselect="">
-                <a href="javascript:;" lay-header-event="flexible" title="侧边伸缩">
+                <a href="javascript:;" lay-header-event="menuLeft" title="侧边伸缩">
                     <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
                 </a>
             </li>
@@ -92,21 +92,23 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">我的主页</a>
-                    <dl class="layui-nav-child">
-                        <dd><a onclick="openNewTab(this)" data-id="main" title="我的首页">我的首页</a></dd>
-                        <dd><a onclick="openNewTab(this)" data-id="swagger" title="接口文档">接口文档</a></dd>
-                        <dd><a onclick="openNewTab(this)" data-id="druid" title="Druid监控">Druid监控</a></dd>
-                    </dl>
+                    <a onclick="openNewTab(this)" data-id="main" title="我的首页"><i class="layui-icon layui-icon-console"></i><span>我的首页</span></a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">我的设置</a>
+                    <a href="javascript:;"><i class="layui-icon layui-icon-app"></i><span>我的应用</span></a>
                     <dl class="layui-nav-child">
-                        <dd><a onclick="openNewTab(this)" data-id="profile" title="个人资料">个人资料</a></dd>
+                        <dd><a onclick="openNewTab(this)" data-id="swagger" title="接口文档"><i class="layui-icon layui-icon-read"></i><span>接口文档</span></a></dd>
+                        <dd><a onclick="openNewTab(this)" data-id="druid" title="Druid监控"><i class="layui-icon layui-icon-util"></i><span>Druid监控</span></a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a onclick="openNewTab(this)" data-id="user" title="用户管理">用户管理</a></li>
-                <li class="layui-nav-item"><a href="javascript:;">系统管理</a></li>
+                <li class="layui-nav-item"><a onclick="openNewTab(this)" data-id="user" title="用户管理"><i class="layui-icon layui-icon-group"></i><span>用户管理</span></a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-set-fill"></i><span>系统管理</span></a>
+                    <dl class="layui-nav-child">
+                        <dd><a onclick="openNewTab(this)" data-id="profile" title="个人资料"><i class="layui-icon layui-icon-username"></i><span>个人资料</span></a></dd>
+                        <dd><a href="javascript:;"><i class="layui-icon layui-icon-log"></i><span>操作日志</span></a></dd>
+                    </dl>
+                </li>
             </ul>
         </div>
     </div>

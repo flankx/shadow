@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.shadow.enums.ResultCode;
-import com.github.shadow.pojo.LoginDTO;
+import com.github.shadow.dto.LoginDTO;
 import com.github.shadow.pojo.R;
 import com.github.shadow.service.ISysUserService;
 import com.github.shadow.util.ShiroUtils;
