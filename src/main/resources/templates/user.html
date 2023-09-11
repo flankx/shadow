@@ -42,16 +42,6 @@
         </a>
     </div>
 </script>
-<!-- 转换字段sexType -->
-<script type="text/html" id="table-gender">
-    {{# if(d.sexType === 0) { }}
-    女
-    {{# } else if(d.sexType === 1) { }}
-    男
-    {{# } else { }}
-    禁用
-    {{# } }}
-</script>
 <script src="../static/layui/layui.js" th:src="@{/layui/layui.js}"></script>
 <script src="../static/js/user.js" th:src="@{/js/user.js}"></script>
 </body>

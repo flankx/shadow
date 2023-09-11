@@ -31,7 +31,7 @@ layui.use(['table', 'dropdown'], function () {
             layEvent: 'LAYTABLE_TIPS',
             icon: 'layui-icon-tips'
         }],
-        height: 'full-35', // 最大高度减去其他容器已占有的高度差
+        // height: 'full-35', // 最大高度减去其他容器已占有的高度差;默认自适应
         css: [ // 重设当前表格样式
             '.layui-table-tool-temp{padding-right: 145px;}'
         ].join(''),
@@ -45,7 +45,15 @@ layui.use(['table', 'dropdown'], function () {
             {field: 'id', fixed: 'left', width: 80, title: 'ID', sort: true, totalRowText: '合计：'},
             {field: 'userName', width: 80, title: '用户'},
             {field: 'nickName', width: 80, title: '昵称'},
-            {field: 'sexType', width: 80, title: '性别', templet: '#table-gender', sort: true},
+            {
+                field: 'sexType', width: 80, title: '性别', templet: function (value) {
+                    if (value.sexType === 1) {
+                        return '<span style="color: blue">♂</span>';
+                    } else {
+                        return '<span style="color: pink">♀</span>';
+                    }
+                }
+            },
             {
                 field: 'phoneNo',
                 title: '手机号 <i class="layui-icon layui-icon-tips layui-font-14" lay-event="phone-tips" title="该字段开启了编辑功能" style="margin-left: 5px;"></i>',
