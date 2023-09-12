@@ -52,16 +52,16 @@
         <!-- 头部区域 右边-->
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item layui-hide-xs" lay-unselect="">
-                <a href="javascript:;" lay-header-event="note">
+                <a href="javascript:;" lay-header-event="note" title="标签">
                     <i class="layui-icon layui-icon-note"></i>
                 </a>
             </li>
-            <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+            <li class="layui-nav-item layui-hide-xs" lay-unselect="" title="主题">
                 <a href="javascript:;" lay-header-event="theme">
                     <i class="layui-icon layui-icon-theme"></i>
                 </a>
             </li>
-            <li class="layui-nav-item layui-hide-xs" lay-unselect="">
+            <li class="layui-nav-item layui-hide-xs" lay-unselect="" title="全屏">
                 <a href="javascript:;" lay-header-event="fullscreen">
                     <i class="layui-icon layui-icon-screen-full"></i>
                 </a>
@@ -69,15 +69,17 @@
             <li class="layui-nav-item" lay-unselect="">
                 <a href="javascript:;">
                     <i th:if="${#strings.isEmpty(user.avatar)}" class="layui-icon layui-icon-user"></i>
-                </a>
-                <a href="javascript:;">
-                    <img th:if="${not #strings.isEmpty(user.avatar)}" th:src="@{${user.avatar}}" alt="avatar"
-                         class="layui-nav-img">
+                    <img th:if="${not #strings.isEmpty(user.avatar)}" th:src="@{${user.avatar}}" alt="avatar" class="layui-nav-img">
+                    <span>[[${user.nickName}]]</span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a onclick="openNewTab(this)" data-id="profile" title="个人资料">个人资料</a></dd>
-                    <dd><a th:href="@{logout}">登出</a></dd>
                 </dl>
+            </li>
+            <li class="layui-nav-item" lay-unselect="">
+                <a th:href="@{logout}" title="注销">
+                    <i class="layui-icon layui-icon-logout"></i>
+                </a>
             </li>
             <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
                 <a href="javascript:;">
