@@ -1,15 +1,61 @@
-//JS
 layui.use(['element', 'layer', 'util'], function () {
     var element = layui.element;
     var layer = layui.layer;
     var util = layui.util;
     var $ = layui.$;
-
+    // 标志位
+    let isShow = true;
     //头部事件
     util.event('lay-header-event', {
         // 左侧菜单事件 - 侧边伸缩
-        menuLeft: function (othis) {
-            layer.msg('展开左侧菜单的操作', {icon: 0});
+        menuLeft: function (object) {
+            $('.layui-nav-item span').each(function () {
+                if ($(this).is(':hidden')) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('#layui-header-title span').each(function () {
+                if ($(this).is(':hidden')) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            // 判断isShow的状态
+            if (isShow) {
+                // 设置宽度
+                $('#layui-header-title').width(60);
+                $('.layui-side.layui-bg-black').width(60);
+                // 修改图标的位置
+                $('.layui-side-scroll i').css('margin-right', '70%');
+                // 将left、footer、body的宽度修改
+                $('.layui-layout-left').css('left', 60 + 'px');
+                $('.layui-body').css('left', 60 + 'px');
+                $('.layui-footer').css('left', 60 + 'px');
+                // 将二级导航栏隐藏
+                $('dd span').each(function () {
+                    $(this).hide();
+                });
+                //修改标志位
+                isShow = false;
+            } else {
+                // 设置宽度
+                $('#layui-header-title').width(200);
+                $('.layui-side.layui-bg-black').width(200);
+                // 修改图标的位置
+                $('.layui-side-scroll i').css('margin-right', '10%');
+                // 将left、footer、body的宽度修改
+                $('.layui-layout-left').css('left', 200 + 'px');
+                $('.layui-body').css('left', 200 + 'px');
+                $('.layui-footer').css('left', 200 + 'px');
+                // 将二级导航栏显示
+                $('dd span').each(function () {
+                    $(this).show();
+                });
+                isShow = true;
+            }
         },
         // 右侧菜单事件
         menuRight: function () {
@@ -72,7 +118,7 @@ layui.use(['element', 'layer', 'util'], function () {
         if ($node.length === 0) {
             element.tabAdd('test-handle', {
                 title: title,
-                content: "<iframe frameborder='0' scrolling='auto' src='" + id + "' class='layaui-iframe'></iframe>",
+                content: '<iframe frameborder="0" scrolling="auto" src="' + id + '" class="layaui-iframe"></iframe>',
                 id: id,
                 change: true // 是否添加完毕后即自动切换
             })
