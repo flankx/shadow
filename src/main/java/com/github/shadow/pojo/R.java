@@ -24,6 +24,10 @@ public class R<T> {
         this(code.getCode(), code.getMessage(), data);
     }
 
+    public R(IResultCode code, T data, String message) {
+        this(code.getCode(), message, data);
+    }
+
     public R(int code, String message, T data) {
         this.code = code;
         this.message = message;
@@ -46,28 +50,28 @@ public class R<T> {
         return new R<>(code);
     }
 
-    public static <T> R<T> success(String message) {
-        return new R<>(ResultCode.SUCCESS, message);
+    public static <T> R<T> success(String msg) {
+        return new R<>(ResultCode.SUCCESS, msg);
     }
 
-    public static <T> R<T> success(IResultCode code, String message) {
-        return new R<>(code, message);
+    public static <T> R<T> success(IResultCode code, String msg) {
+        return new R<>(code, msg);
     }
 
-    public static <T> R<T> fail(String message) {
-        return new R<>(ResultCode.FAILURE, message);
+    public static <T> R<T> fail(String msg) {
+        return new R<>(ResultCode.FAILURE, msg);
     }
 
-    public static <T> R<T> fail(IResultCode errorCode) {
-        return new R<>(errorCode, null);
+    public static <T> R<T> fail(int code, String msg) {
+        return new R<>(code, msg, null);
     }
 
-    public static <T> R<T> fail(IResultCode errorCode, String... args) {
-        return new R<>(errorCode.getCode(), String.format(errorCode.getMessage(), args), null);
+    public static <T> R<T> fail(IResultCode code) {
+        return new R<>(code);
     }
 
-    public static <T> R<T> fail(Integer errorCode, String errorMessage) {
-        return new R<>(errorCode, errorMessage, null);
+    public static <T> R<T> fail(IResultCode code, String msg) {
+        return new R<>(code.getCode(), msg, null);
     }
 
     public static <T> R<T> status(boolean flag) {

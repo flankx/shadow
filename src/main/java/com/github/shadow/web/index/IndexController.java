@@ -65,7 +65,7 @@ public class IndexController {
         Subject subject = SecurityUtils.getSubject();
         // 比较验证码
         if (!request.getSession().getAttribute("kaptcha").equals(captcha)) {
-            return R.fail(ResultCode.FAILURE, "验证码错误！");
+            return R.fail("验证码错误！");
         }
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
@@ -73,7 +73,7 @@ public class IndexController {
             log.info("sessionID : {}", subject.getSession().getId());
         } catch (AuthenticationException e) {
             e.printStackTrace();
-            return R.fail(ResultCode.FAILURE, "用户名或密碼錯誤！");
+            return R.fail("用户名或密碼錯誤！");
         }
         return R.success("登录成功！");
     }

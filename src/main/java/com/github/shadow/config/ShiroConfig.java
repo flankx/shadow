@@ -3,8 +3,6 @@ package com.github.shadow.config;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import com.github.shadow.shiro.UserRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -15,6 +13,10 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+
+import com.github.shadow.shiro.UserRealm;
+
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 
 /**
  * shiro配置类
@@ -72,14 +74,16 @@ public class ShiroConfig {
      */
     @Bean
     public UserRealm userRealm() {
-        return new UserRealm();
+        UserRealm realm = new UserRealm();
+        realm.setCredentialsMatcher(hashedCredentialsMatcher());
+        return realm;
     }
 
     /**
      * 凭证匹配器 （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了 所以我们需要修改下doGetAuthenticationInfo中的代码; ） 可以扩展凭证匹配器，实现
      * 输入密码错误次数后锁定等功能，下一次
      */
-    @Bean(name = "credentialsMatcher")
+    @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         // 散列算法:这里使用MD5算法;
@@ -123,7 +127,7 @@ public class ShiroConfig {
      * 配置ShiroDialect,用于thymeleaf和shiro标签配合使用
      */
     @Bean
-    public ShiroDialect getShiroDialect(){
+    public ShiroDialect getShiroDialect() {
         return new ShiroDialect();
     }
 

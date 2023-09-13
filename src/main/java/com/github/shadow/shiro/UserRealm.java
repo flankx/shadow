@@ -42,7 +42,6 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String userName = (String)token.getPrincipal();
-        String password = new String((char[])token.getCredentials());
         SysUser user = sysUserService.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName, userName));
         if (user == null) {
             // 没找到帐号
@@ -50,7 +49,7 @@ public class UserRealm extends AuthorizingRealm {
         }
         // 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo =
-            new SimpleAuthenticationInfo(userName, password, ByteSource.Util.bytes(user.getSalt()), this.getName());
+            new SimpleAuthenticationInfo(userName, user.getPassword(), ByteSource.Util.bytes(user.getSalt()), this.getName());
         // 将用户信息放入session中
         SecurityUtils.getSubject().getSession().setAttribute("userId", user.getId());
         SecurityUtils.getSubject().getSession().setAttribute("userName", user.getUserName());
