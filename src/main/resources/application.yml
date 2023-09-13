@@ -35,6 +35,11 @@ spring:
       max-file-size: 10MB
       # 设置总上传的文件大小
       max-request-size: 20MB
+  #  ehcache 缓存
+  cache:
+    type: ehcache
+    ehcache:
+      config: ehcache/ehcache.xml
 
 logging:
   level:
@@ -98,7 +103,7 @@ knife4j:
     language: zh-CN
     enable-footer: false
     enable-footer-custom: true
-    footer-custom-content: Copyright © 2023 flankx All Rights Reserved
+    footer-custom-content: Copyright © 2023 flankxu All Rights Reserved
     enable-debug: true
     enable-open-api: false
     enable-group: true

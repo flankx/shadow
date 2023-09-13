@@ -19,11 +19,11 @@
 		<shiro-spring.version>1.12.0</shiro-spring.version>
 		<shiro-ehcache.version>1.12.0</shiro-ehcache.version>
 		<thymeleaf-extras-shiro.version>2.1.0</thymeleaf-extras-shiro.version>
-		<mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+		<mybatis-plus.version>3.5.3.2</mybatis-plus.version>
 		<oshi.version>6.4.4</oshi.version>
 		<jna.version>5.13.0</jna.version>
 		<knife4j-openapi2.version>4.3.0</knife4j-openapi2.version>
-		<druid.version>1.2.18</druid.version>
+		<druid.version>1.2.19</druid.version>
 		<jexl.version>3.2.1</jexl.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
 	</properties>
@@ -47,6 +47,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>

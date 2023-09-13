@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -26,6 +27,21 @@ import com.github.shadow.service.ISysUserService;
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
+
+    @Override
+    @Cacheable(value = "sys-userCache", key = "#userId", condition = "#userId != null")
+    public SysUser getUserById(Integer userId) {
+        // 过滤密码字段
+        List<String> excludeFields = Arrays.asList("password");
+        return baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery()
+            .select(SysUser.class, i -> !excludeFields.contains(i.getProperty())).eq(SysUser::getId, userId));
+    }
+
+    @Override
+    public SysUser getAvatarById(Integer userId) {
+        return baseMapper.selectOne(
+            Wrappers.<SysUser>lambdaQuery().select(SysUser::getId, SysUser::getAvatar).eq(SysUser::getId, userId));
+    }
 
     @Override
     public IPage<SysUser> userPage(UserPageRequest request) {

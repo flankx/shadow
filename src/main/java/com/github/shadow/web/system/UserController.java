@@ -2,21 +2,18 @@ package com.github.shadow.web.system;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Date;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.shadow.entity.SysUser;
 import com.github.shadow.pojo.R;
 import com.github.shadow.request.UserPageRequest;
 import com.github.shadow.service.ISysUserService;
-import com.github.shadow.util.JsonUtils;
 import com.github.shadow.util.ShiroUtils;
 
 import io.swagger.annotations.Api;
@@ -44,17 +41,15 @@ public class UserController {
     @GetMapping("/avatar")
     @ResponseBody
     public String avatar() {
-        SysUser user = sysUserService.getOne(
-            Wrappers.<SysUser>lambdaQuery().select(SysUser::getAvatar).eq(SysUser::getId, ShiroUtils.getCurrentUser()));
-        return user.getAvatar();
+        SysUser user = sysUserService.getAvatarById(ShiroUtils.getCurrentUser());
+        return user != null ? user.getAvatar() : null;
     }
 
     @ApiOperation(value = "上传头像")
     @PostMapping("/uploadAvatar")
     @ResponseBody
     public R uploadAvatar(MultipartFile file) {
-        SysUser user = sysUserService.getOne(Wrappers.<SysUser>lambdaQuery().select(SysUser::getId, SysUser::getAvatar)
-            .eq(SysUser::getId, ShiroUtils.getCurrentUser()));
+        SysUser user = sysUserService.getAvatarById(ShiroUtils.getCurrentUser());
         if (user == null) {
             return R.fail("用户不存在或者未登录！");
         }
@@ -65,6 +60,7 @@ public class UserController {
             String formatStr = String.format("data:%s;base64,%s", file.getContentType(),
                 Base64.getEncoder().encodeToString(file.getBytes()));
             user.setAvatar(formatStr);
+            user.setUpdateTime(new Date());
             return R.status(sysUserService.updateById(user));
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,10 +71,7 @@ public class UserController {
     @ApiOperation(value = "用户详情")
     @GetMapping("/detail")
     @ResponseBody
-    public R<SysUser> detail(Integer userId) {
-        if (userId == null) {
-            return R.fail("用户不存在！");
-        }
+    public R<SysUser> detail(@RequestParam Integer userId) {
         return R.data(sysUserService.getById(userId));
     }
 
@@ -86,8 +79,15 @@ public class UserController {
     @GetMapping("/page")
     @ResponseBody
     public R<IPage<SysUser>> page(UserPageRequest request) {
-        log.info(JsonUtils.toJson(request));
         return R.data(sysUserService.userPage(request));
+    }
+
+    @ApiOperation(value = "用户删除")
+    @DeleteMapping("/remove")
+    @ResponseBody
+    @CacheEvict(value = "sys-userCache", key = "#userId")
+    public R remove(@RequestParam Integer userId) {
+        return R.status(sysUserService.removeById(userId));
     }
 
 }

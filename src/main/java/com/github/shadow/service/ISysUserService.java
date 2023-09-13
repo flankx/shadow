@@ -16,6 +16,22 @@ import com.github.shadow.request.UserPageRequest;
 public interface ISysUserService extends IService<SysUser> {
 
     /**
+     * Gets user by id.
+     *
+     * @param userId the user id
+     * @return user by id
+     */
+    SysUser getUserById(Integer userId);
+
+    /**
+     * Gets avatar by id.
+     *
+     * @param userId the user id
+     * @return the avatar by id
+     */
+    SysUser getAvatarById(Integer userId);
+
+    /**
      * User page page.
      *
      * @param request the request

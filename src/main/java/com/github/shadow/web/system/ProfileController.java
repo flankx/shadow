@@ -1,11 +1,15 @@
 package com.github.shadow.web.system;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.shadow.dto.EditPassDTO;
 import com.github.shadow.entity.SysUser;
 import com.github.shadow.pojo.R;
@@ -28,14 +32,14 @@ public class ProfileController {
     @ApiIgnore
     @GetMapping
     public String profile(ModelMap modelMap) {
-        Integer userId = ShiroUtils.getCurrentUser();
-        modelMap.put("user", sysUserService.getById(userId));
+        modelMap.put("user", sysUserService.getUserById(ShiroUtils.getCurrentUser()));
         return "/profile";
     }
 
     @ApiOperation(value = "更新个人资料")
     @PostMapping
     @ResponseBody
+    @CacheEvict(value = "sys-userCache", key = "#user.id")
     public R updateProfile(@RequestBody SysUser user) {
         if (StringUtils.isBlank(user.getAvatar())) {
             user.setAvatar(null);
@@ -48,12 +52,13 @@ public class ProfileController {
     @ResponseBody
     public R updatePassword(@RequestBody EditPassDTO editPass) {
         Integer userId = ShiroUtils.getCurrentUser();
-        SysUser user = sysUserService.getById(userId);
+        SysUser user = sysUserService.getOne(
+            Wrappers.<SysUser>lambdaQuery().select(SysUser::getId, SysUser::getPassword).eq(SysUser::getId, userId));
         if (user == null) {
             return R.fail("用户不存在！");
         }
-        String oldPass = new Md5Hash(editPass.getOldPassword(), user.getSalt()).toHex();
-        String newPass = new Md5Hash(editPass.getPassword(), user.getSalt()).toHex();
+        String oldPass = new Md5Hash(editPass.getOldPassword(), user.getSalt(), 2).toHex();
+        String newPass = new Md5Hash(editPass.getPassword(), user.getSalt(), 2).toHex();
         if (!user.getPassword().equals(oldPass)) {
             return R.fail("修改密码失败，旧密码错误");
         }
@@ -61,6 +66,7 @@ public class ProfileController {
             return R.fail("新密码不能与旧密码相同");
         }
         user.setPassword(newPass);
+        user.setUpdateTime(new Date());
         return R.status(sysUserService.updateById(user));
     }
 

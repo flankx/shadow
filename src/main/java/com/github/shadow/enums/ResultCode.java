@@ -11,7 +11,7 @@ public enum ResultCode implements IResultCode {
     // 错误码
     SUCCESS(200, "操作成功"),
     FAILURE(400, "业务异常"),
-    INTERNAL_SERVER_ERROR(500, "服务器异常;%s"),
+    INTERNAL_SERVER_ERROR(500, "服务器异常"),
     ;
 
     private final Integer code;

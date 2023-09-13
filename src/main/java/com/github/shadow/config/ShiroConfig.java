@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.DependsOn;
 import com.github.shadow.shiro.UserRealm;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import net.sf.ehcache.CacheManager;
 
 /**
  * shiro配置类
@@ -63,9 +65,9 @@ public class ShiroConfig {
      * 不指定名字的话，自动创建一个方法名第一个字母小写的bean
      */
     @Bean
-    public SecurityManager securityManager() {
+    public SecurityManager securityManager(UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(userRealm());
+        securityManager.setRealm(userRealm);
         return securityManager;
     }
 
@@ -73,10 +75,18 @@ public class ShiroConfig {
      * Shiro Realm 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的
      */
     @Bean
-    public UserRealm userRealm() {
-        UserRealm realm = new UserRealm();
-        realm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return realm;
+    public UserRealm userRealm(EhCacheManager ehCacheManager) {
+        UserRealm userRealm = new UserRealm();
+        userRealm.setCacheManager(ehCacheManager);
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        return userRealm;
+    }
+
+    @Bean
+    public EhCacheManager ehCacheManager(CacheManager cacheManager) {
+        EhCacheManager ehCacheManager = new EhCacheManager();
+        ehCacheManager.setCacheManager(cacheManager);
+        return ehCacheManager;
     }
 
     /**
@@ -89,7 +99,7 @@ public class ShiroConfig {
         // 散列算法:这里使用MD5算法;
         hashedCredentialsMatcher.setHashAlgorithmName("MD5");
         // 散列的次数，比如散列两次，相当于 md5(md5(""));
-        hashedCredentialsMatcher.setHashIterations(1);
+        hashedCredentialsMatcher.setHashIterations(2);
         // storedCredentialsHexEncoded默认是true，此时用的是密码加密用的是Hex编码；false时用Base64编码
         hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);
         return hashedCredentialsMatcher;
@@ -116,10 +126,10 @@ public class ShiroConfig {
     }
 
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor =
             new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager());
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
 

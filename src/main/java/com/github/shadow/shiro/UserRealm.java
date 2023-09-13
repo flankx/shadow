@@ -48,8 +48,8 @@ public class UserRealm extends AuthorizingRealm {
             throw new UnknownAccountException();
         }
         // 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
-        SimpleAuthenticationInfo authenticationInfo =
-            new SimpleAuthenticationInfo(userName, user.getPassword(), ByteSource.Util.bytes(user.getSalt()), this.getName());
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userName, user.getPassword(),
+            ByteSource.Util.bytes(user.getSalt()), this.getName());
         // 将用户信息放入session中
         SecurityUtils.getSubject().getSession().setAttribute("userId", user.getId());
         SecurityUtils.getSubject().getSession().setAttribute("userName", user.getUserName());
