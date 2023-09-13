@@ -45,7 +45,7 @@ public class UserRealm extends AuthorizingRealm {
         SysUser user = sysUserService.getOne(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName, userName));
         if (user == null) {
             // 没找到帐号
-            throw new UnknownAccountException();
+            throw new UnknownAccountException(String.format("用户不存在！userName = %s", userName));
         }
         // 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userName, user.getPassword(),
