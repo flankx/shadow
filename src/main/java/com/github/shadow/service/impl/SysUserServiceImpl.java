@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import com.github.shadow.entity.SysUser;
 import com.github.shadow.mapper.SysUserMapper;
 import com.github.shadow.request.UserPageRequest;
 import com.github.shadow.service.ISysUserService;
+import com.github.shadow.util.ShiroUtils;
 
 /**
  * <p>
@@ -59,6 +61,37 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             queryWrapper.like(SysUser::getEmail, request.getNickName());
         }
         return this.page(new Page<>(request.getCurrent(), request.getSize()), queryWrapper);
+    }
+
+    @Override
+    public boolean submit(SysUser user) {
+        String salt = ShiroUtils.randomSalt();
+        // 生成默认密码
+        SimpleHash hash = new SimpleHash("MD5", "123456", salt);
+        user.setSalt(salt);
+        user.setPassword(hash.toHex());
+        if (user.getId() == null) {
+            // 新增
+            Long cnt =
+                baseMapper.selectCount(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName, user.getUserName()));
+            if (cnt >= 1) {
+                throw new RuntimeException("重复的用户名！" + user.getUserName());
+            }
+        } else {
+            // 编辑
+            SysUser oldUser = baseMapper.selectById(user.getId());
+            if (oldUser == null) {
+                throw new RuntimeException("用户不存在！" + user.getUserName());
+            }
+            if (!oldUser.getUserName().equals(user.getUserName())) {
+                Long cnt = baseMapper
+                    .selectCount(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName, user.getUserName()));
+                if (cnt >= 1) {
+                    throw new RuntimeException("重复的用户名！" + user.getUserName());
+                }
+            }
+        }
+        return saveOrUpdate(user);
     }
 
 }

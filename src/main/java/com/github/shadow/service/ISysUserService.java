@@ -39,4 +39,12 @@ public interface ISysUserService extends IService<SysUser> {
      */
     IPage<SysUser> userPage(UserPageRequest request);
 
+    /**
+     * Submit boolean.
+     *
+     * @param user the user
+     * @return the boolean
+     */
+    boolean submit(SysUser user);
+
 }

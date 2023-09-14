@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +16,7 @@ import com.github.shadow.entity.SysUser;
 import com.github.shadow.pojo.R;
 import com.github.shadow.request.UserPageRequest;
 import com.github.shadow.service.ISysUserService;
+import com.github.shadow.util.JsonUtils;
 import com.github.shadow.util.ShiroUtils;
 
 import io.swagger.annotations.Api;
@@ -23,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Slf4j
+@CacheConfig(cacheNames = {"sys-userCache"})
 @Controller
 @RequestMapping("/user")
 @AllArgsConstructor
@@ -71,8 +75,18 @@ public class UserController {
     @ApiOperation(value = "用户详情")
     @GetMapping("/detail")
     @ResponseBody
+    @Cacheable(key = "#userId", condition = "#userId != null")
     public R<SysUser> detail(@RequestParam Integer userId) {
         return R.data(sysUserService.getById(userId));
+    }
+
+    @ApiOperation(value = "新增或者编辑用户")
+    @PostMapping("/submit")
+    @ResponseBody
+    @CacheEvict(key = "#user.id", condition = "#user.id != null")
+    public R submit(@RequestBody SysUser user) {
+        log.info(JsonUtils.toJson(user));
+        return R.status(sysUserService.submit(user));
     }
 
     @ApiOperation(value = "分页查询")
@@ -82,11 +96,11 @@ public class UserController {
         return R.data(sysUserService.userPage(request));
     }
 
-    @ApiOperation(value = "用户删除")
+    @ApiOperation(value = "删除")
     @DeleteMapping("/remove")
     @ResponseBody
-    @CacheEvict(value = "sys-userCache", key = "#userId")
-    public R remove(@RequestParam Integer userId) {
+    @CacheEvict(allEntries = true, key = "#userId", condition = "#userId != null ")
+    public R remove(@RequestParam Long userId) {
         return R.status(sysUserService.removeById(userId));
     }
 

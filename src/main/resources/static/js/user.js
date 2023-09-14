@@ -1,6 +1,7 @@
 layui.use(['table', 'dropdown'], function () {
     var table = layui.table;
     var dropdown = layui.dropdown;
+    var form = layui.form;
 
     // 创建渲染实例
     table.render({
@@ -84,7 +85,7 @@ layui.use(['table', 'dropdown'], function () {
             // {field:'ip', title:'IP', width: 120},
             // {field:'experience', width: 100, title: '积分', sort: true, totalRow: '{{= d.TOTAL_NUMS }} 😊'},
             // {field:'checkin', title:'打卡', width: 100, sort: true, totalRow: '{{= parseInt(d.TOTAL_NUMS) }} 次'},
-            {fixed: 'right', title: '操作', width: 134, minWidth: 125, toolbar: '#barDemo'}
+            {fixed: 'right', title: '操作', width: 150, minWidth: 125, toolbar: '#barDemo'}
         ]],
         done: function () {
             var id = this.id;
@@ -93,13 +94,7 @@ layui.use(['table', 'dropdown'], function () {
                 elem: '#dropdownButton', // 可绑定在任意元素中，此处以上述按钮为例
                 data: [{
                     id: 'add',
-                    title: '添加'
-                }, {
-                    id: 'update',
-                    title: '编辑'
-                }, {
-                    id: 'delete',
-                    title: '删除'
+                    title: '新增'
                 }],
                 // 菜单被点击的事件
                 click: function (obj) {
@@ -107,27 +102,8 @@ layui.use(['table', 'dropdown'], function () {
                     var data = checkStatus.data; // 获取选中的数据
                     switch (obj.id) {
                         case 'add':
-                            layer.open({
-                                title: '添加',
-                                type: 1,
-                                area: ['80%', '80%'],
-                                content: '<div style="padding: 16px;">自定义表单元素</div>'
-                            });
-                            break;
-                        case 'update':
-                            if (data.length !== 1) return layer.msg('请选择一行');
-                            layer.open({
-                                title: '编辑',
-                                type: 1,
-                                area: ['80%', '80%'],
-                                content: '<div style="padding: 16px;">自定义表单元素</div>'
-                            });
-                            break;
-                        case 'delete':
-                            if (data.length === 0) {
-                                return layer.msg('请选择一行');
-                            }
-                            layer.msg('delete event');
+                            // 调用打开弹层的工具方法
+                            open_form("#open_div", data, '新增', '80%', '65%');
                             break;
                     }
                 }
@@ -283,40 +259,29 @@ layui.use(['table', 'dropdown'], function () {
     // 触发单元格工具事件
     table.on('tool(test)', function (obj) { // 双击 toolDouble
         var data = obj.data; // 获得当前行数据
-        // console.log(obj)
-        if (obj.event === 'edit') {
-            layer.open({
-                title: '编辑 - id:' + data.id,
-                type: 1,
-                area: ['80%', '80%'],
-                content: '<div style="padding: 16px;">自定义表单元素</div>'
-            });
-        } else if (obj.event === 'more') {
-            // 更多 - 下拉菜单
-            dropdown.render({
-                elem: this, // 触发事件的 DOM 对象
-                show: true, // 外部事件触发即显示
-                data: [{
-                    title: '查看',
-                    id: 'detail'
-                }, {
-                    title: '删除',
-                    id: 'del'
-                }],
-                click: function (menudata) {
-                    if (menudata.id === 'detail') {
-                        layer.msg('查看操作，当前行 ID:' + data.id);
-                    } else if (menudata.id === 'del') {
-                        layer.confirm('真的删除行 [id: ' + data.id + '] 么', function (index) {
-                            obj.del(); // 删除对应行（tr）的DOM结构
-                            layer.close(index);
-                            // 向服务端发送删除指令
-                        });
+        if (obj.event === 'detail') {
+            layer.msg('查看操作，当前行 ID:' + data.id);
+        } else if (obj.event === 'edit') {
+            // 根据编辑行为为form隐藏项赋值
+            open_form("#open_div", data, '编辑', '80%', '65%');
+        } else if (obj.event === 'delete') {
+            layer.confirm('确认删除？', function (index) {
+                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                //向服务端发送删除指令
+                $.ajax({
+                    type: "delete",  //数据提交方式(post/get)
+                    url: "/user/remove?userId=" + data.id,  //提交到的url
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",//返回的数据类型格式
+                    success: function (result) {
+                        layer.msg(result.msg, {icon: 1, time: 1000});
+                    }, error: function (e) {
+                        console.log(e, 'error');
+                        layer.msg("删除操作异常，请联系管理员！", {icon: 1, time: 1000});
                     }
-                },
-                align: 'right', // 右对齐弹出
-                style: 'box-shadow: 1px 1px 10px rgb(0 0 0 / 12%);' // 设置额外样式
-            })
+                });
+                layer.close(index);
+            });
         }
     });
 
@@ -361,4 +326,93 @@ layui.use(['table', 'dropdown'], function () {
         update[field] = value;
         obj.update(update);
     });
+
+    // 新增或者编辑表单提交事件
+    form.on('submit(userSumbit)', function (data) {
+        $.ajax({
+            type: 'POST',
+            url: '/user/submit',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data.field),
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result.code === 200) {
+                    // 重载 - 默认（参数重置）
+                    table.reload('test', {
+                        where: {
+                            current: '1',
+                            size: '10'
+                        }
+                    });
+                    layer.msg('修改成功', {icon: 1, time: 1000});
+                } else {  //失败
+                    layer.alert(result.message, {icon: 2}, function () {
+                        layer.close(index);
+                    });
+                }
+            }
+        });
+        layer.close(index);//关闭弹出层
+        return false;
+    });
 });
+
+var index;
+
+// 打开表单提交页码
+function open_form(element, data, title, width, height) {
+    index = layer.open({
+        type: 1,
+        title: [title, 'font-size:14px; text-align: center'],
+        area: [width, height],
+        fix: false, //不固定
+        maxmin: true,//开启最大化最小化按钮
+        shadeClose: true,//点击阴影处可关闭
+        shade: 0.4,//弹层的遮罩
+        anim: 5,//弹层的出场动画
+        skin: 'layui-layer-lan', //弹层的主题风格
+        content: $(element),
+        success: function () {
+            $(element).setForm(data);
+            layui.form.render();  // 下拉框赋值
+        },
+        end: function () {
+            $(element).css({"display": "none"})
+        }
+    });
+}
+
+// 填充表单数据
+$.fn.setForm = function (jsonValue) {
+    var obj = this;
+    $.each(jsonValue, function (name, ival) {
+        var $oinput = obj.find("input[name=" + name + "]");
+        if ($oinput.attr("type") === "checkbox") {
+            if (ival !== null) {
+                var checkboxObj = $("[name=" + name + "]");
+                var checkArray = ival.split(";");
+                for (var i = 0; i < checkboxObj.length; i++) {
+                    for (var j = 0; j < checkArray.length; j++) {
+                        if (checkboxObj[i].value() === checkArray[j]) {
+                            checkboxObj[i].click();
+                        }
+                    }
+                }
+            }
+        } else if ($oinput.attr("type") === "radio") {
+            $oinput.each(function () {
+                var radioObj = $("[name=" + name + "]");
+                for (var i = 0; i < radioObj.length; i++) {
+                    if (radioObj[i].defaultValue === ival) {
+                        radioObj[i].click();
+                    }
+                }
+            });
+        } else if ($oinput.attr("type") === "textarea") {
+            obj.find("[name=" + name + "]").html(ival);
+        } else {
+            obj.find("[name=" + name + "]").val(ival);
+        }
+    })
+};

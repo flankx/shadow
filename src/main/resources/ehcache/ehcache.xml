@@ -37,8 +37,8 @@
            overflowToDisk="false"
            eternal="false"
            diskPersistent="false"
-           timeToLiveSeconds="0"
-           timeToIdleSeconds="0"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
            memoryStoreEvictionPolicy="LRU"
            statistics="false"/>
 </ehcache>
