@@ -19,3 +19,29 @@ CREATE TABLE IF NOT EXISTS `sys_user`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='用户表';
 
+-- CREATE TABLE IF NOT EXISTS `sys_role`
+-- (
+--     `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+--     `name`        varchar(64)  DEFAULT NULL COMMENT '名称',
+--     `sort`        varchar(64)  DEFAULT NULL COMMENT '描述',
+--     `status`      tinyint      DEFAULT NULL COMMENT '状态',
+--     `create_time` datetime     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+--     `update_time` datetime     DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+--     PRIMARY KEY (`id`)
+-- ) ENGINE = InnoDB
+--   DEFAULT CHARSET = utf8mb4 COMMENT ='角色表';
+--
+-- CREATE TABLE IF NOT EXISTS `sys_role_permission`
+-- (
+--     `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+--     `name`        varchar(64)  DEFAULT NULL COMMENT '名称',
+--     `code`        varchar(64)  DEFAULT NULL COMMENT '编号',
+--     `type`        tinyint      DEFAULT NULL COMMENT '类型',
+--     `url`         varchar(255) DEFAULT NULL COMMENT '地址',
+--     `sort`        int(11)      DEFAULT NULL COMMENT '排序',
+--     `status`      tinyint      DEFAULT NULL COMMENT '状态',
+--     `create_time` datetime     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+--     `update_time` datetime     DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+--     PRIMARY KEY (`id`)
+-- ) ENGINE = InnoDB
+--   DEFAULT CHARSET = utf8mb4 COMMENT ='权限表';

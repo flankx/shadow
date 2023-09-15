@@ -1,4 +1,4 @@
-package com.github.shadow.web.websocket;
+package com.github.shadow.controller.websocket;
 
 import java.text.MessageFormat;
 import java.time.ZonedDateTime;

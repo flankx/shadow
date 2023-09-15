@@ -1,4 +1,4 @@
-package com.github.shadow.web.common;
+package com.github.shadow.controller.common;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

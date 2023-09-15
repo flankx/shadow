@@ -32,7 +32,7 @@ public class TestDemo {
                 .pathInfo(Collections.singletonMap(OutputFile.xml,
                     "C:\\Users\\admin\\IdeaProjects\\shadow\\src\\main\\resources\\mapper")); // 设置mapperXml生成路径
         }).strategyConfig(builder -> {
-            builder.addInclude("sys_user", "user_data") // 设置需要生成的表名
+            builder.addInclude("sys_user", "sys_role", "sys_role_permission") // 设置需要生成的表名
                 .addTablePrefix(""); // 设置过滤表前缀
         }).templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
             .execute();

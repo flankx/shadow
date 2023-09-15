@@ -26,12 +26,12 @@ public class SwaggerConfig {
 
     @Bean
     public Docket shadowDocket() {
-        return docket("系统模块", Collections.singletonList("com.github.shadow.web" + ".system"));
+        return docket("系统模块", Collections.singletonList("com.github.shadow.controller" + ".system"));
     }
 
     @Bean
     public Docket commonDocket() {
-        return docket("通用模块", Collections.singletonList("com.github.shadow.web" + ".common"));
+        return docket("通用模块", Collections.singletonList("com.github.shadow.controller" + ".common"));
     }
 
     private Docket docket(String groupName, List<String> basePackages) {

@@ -1,4 +1,4 @@
-package com.github.shadow.web.common;
+package com.github.shadow.controller.common;
 
 import java.util.ArrayList;
 import java.util.Map;

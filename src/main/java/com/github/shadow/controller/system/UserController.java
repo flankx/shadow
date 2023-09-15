@@ -1,4 +1,4 @@
-package com.github.shadow.web.system;
+package com.github.shadow.controller.system;
 
 import java.io.IOException;
 import java.util.Base64;

@@ -1,4 +1,4 @@
-package com.github.shadow.web.index;
+package com.github.shadow.controller.index;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.shadow.enums.ResultCode;
 import com.github.shadow.dto.LoginDTO;
 import com.github.shadow.pojo.R;
 import com.github.shadow.service.ISysUserService;
@@ -39,8 +38,7 @@ public class IndexController {
 
     @GetMapping(value = "/index")
     public String home(ModelMap modelMap) {
-        Integer userId = ShiroUtils.getCurrentUser();
-        modelMap.put("user", sysUserService.getById(userId));
+        modelMap.put("user", sysUserService.getUserById(ShiroUtils.getCurrentUser()));
         return "/index";
     }
 
