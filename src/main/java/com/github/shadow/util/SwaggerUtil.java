@@ -16,7 +16,7 @@ public class SwaggerUtil {
 
     private static Function<Class<?>, Boolean> handlerPackage(final List<String> basePackages) {
         return (input) -> {
-            Iterator var2 = basePackages.iterator();
+            Iterator<String> var2 = basePackages.iterator();
 
             boolean isMatch;
             do {
@@ -24,7 +24,7 @@ public class SwaggerUtil {
                     return false;
                 }
 
-                String strPackage = (String)var2.next();
+                String strPackage = var2.next();
                 isMatch = input.getPackage().getName().startsWith(strPackage);
             } while (!isMatch);
 

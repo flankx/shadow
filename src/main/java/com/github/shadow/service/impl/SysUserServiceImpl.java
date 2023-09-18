@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.shadow.entity.SysUser;
+import com.github.shadow.exception.BizException;
 import com.github.shadow.mapper.SysUserMapper;
 import com.github.shadow.request.UserPageRequest;
 import com.github.shadow.service.ISysUserService;
@@ -75,19 +76,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             Long cnt =
                 baseMapper.selectCount(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName, user.getUserName()));
             if (cnt >= 1) {
-                throw new RuntimeException("重复的用户名！" + user.getUserName());
+                throw new BizException("重复的用户名！" + user.getUserName());
             }
         } else {
             // 编辑
             SysUser oldUser = baseMapper.selectById(user.getId());
             if (oldUser == null) {
-                throw new RuntimeException("用户不存在！" + user.getUserName());
+                throw new BizException("用户不存在！" + user.getUserName());
             }
             if (!oldUser.getUserName().equals(user.getUserName())) {
                 Long cnt = baseMapper
                     .selectCount(Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUserName, user.getUserName()));
                 if (cnt >= 1) {
-                    throw new RuntimeException("重复的用户名！" + user.getUserName());
+                    throw new BizException("重复的用户名！" + user.getUserName());
                 }
             }
         }

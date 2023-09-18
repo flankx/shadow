@@ -39,7 +39,7 @@ public class ProfileController {
     @ApiOperation(value = "更新个人资料")
     @PostMapping
     @ResponseBody
-    @CacheEvict(value = "sys-userCache", key = "#user.id")
+    @CacheEvict(value = "sys-userCache", key = "#user.id", condition = "#user.id != null")
     public R updateProfile(@RequestBody SysUser user) {
         if (StringUtils.isBlank(user.getAvatar())) {
             user.setAvatar(null);
