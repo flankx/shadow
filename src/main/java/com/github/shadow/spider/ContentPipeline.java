@@ -21,12 +21,16 @@ public class ContentPipeline implements Pipeline {
         content.setTitle(resultItems.get("title"));
         content.setQuestion(resultItems.get("question"));
         content.setContent(resultItems.get("answer"));
-        boolean ret = contentService.save(content);
-        if (ret) {
-            log.info("Content saved successfully! title: " + content.getTitle());
-        } else {
-            log.error("Content saved failed! title: " + content.getTitle());
+        try {
+            if (contentService.save(content)) {
+                log.info("Content saved successfully! title: " + content.getTitle());
+            } else {
+                log.error("Content saved failed! title: " + content.getTitle());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
 }
