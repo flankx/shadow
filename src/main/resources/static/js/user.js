@@ -103,7 +103,7 @@ layui.use(['table', 'dropdown'], function () {
                     switch (obj.id) {
                         case 'add':
                             // 调用打开弹层的工具方法
-                            open_form("#open_div", data, '新增', '80%', '65%');
+                            open_form("#open_div", data, '新增', '50%', '65%');
                             break;
                     }
                 }
@@ -263,7 +263,7 @@ layui.use(['table', 'dropdown'], function () {
             layer.msg('查看操作，当前行 ID:' + data.id);
         } else if (obj.event === 'edit') {
             // 根据编辑行为为form隐藏项赋值
-            open_form("#open_div", data, '编辑', '80%', '65%');
+            open_form("#open_div", data, '编辑', '50%', '65%');
         } else if (obj.event === 'delete') {
             layer.confirm('确认删除？', function (index) {
                 obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
