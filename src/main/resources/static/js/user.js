@@ -274,7 +274,13 @@ layui.use(['table', 'dropdown'], function () {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",//返回的数据类型格式
                     success: function (result) {
-                        layer.msg(result.message, {icon: 1, time: 1000});
+                        layer.msg(result.message, {icon: 1, time: 1000}, function () {
+                            table.reload('test', {
+                                where: {
+                                    abc: '123456'
+                                },
+                            });
+                        });
                     }, error: function (e) {
                         console.log(e, 'error');
                         layer.msg("删除操作异常，请联系管理员！", {icon: 1, time: 1000});
