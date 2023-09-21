@@ -1,70 +1,54 @@
 spring:
   application:
     name: shadow
-  datasource:
-#    type: com.zaxxer.hikari.HikariDataSource
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/shadow?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:root}
-    druid:
-      # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
-      initial-size: 4
-      # 最大连接池数量
-      max-active: 20
-      max-evictable-idle-time-millis: 5000000
-      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
-      # pool-prepared-statements: true
-      # 和 max-pool-prepared-statement-per-connection-size 等价
-      # max-open-prepared-statements: 50
-      # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
-      # max-pool-prepared-statement-per-connection-size: 20
-      # 获取连接时最大等待时间，单位毫秒。
-      max-wait: 20000
-      # 连接保持空闲而不被驱逐的最小时间
-      min-evictable-idle-time-millis: 300000
-      # 最小连接池数量
-      min-idle: 4
-      stat-view-servlet:
-        enabled: true
-        login-password: admin
-        login-username: admin
-        reset-enable: false
-        url-pattern: /druid/*
-      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
-      test-on-borrow: false
-      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
-      test-on-return: false
-      # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
-      test-while-idle: true
-      # 有两个含义：1) Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接。2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明
-      time-between-eviction-runs-millis: 100000
-      # 用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用。
-      validation-query: select 'x'
-      # 单位：秒，检测连接是否有效的超时时间。底层调用jdbc Statement对象的void setQueryTimeout(int seconds)方法
-      validation-query-timeout: 60000
-      web-stat-filter:
-        enabled: true
-        exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
-        principal-cookie-name: druid-cookie
-        principal-session-name: druid-session
-        profile-enable: false
-        session-stat-enable: false
-        session-stat-max-count: 1000
-        url-pattern: /*
-
+  profiles:
+    active: druid
   sql:
     init:
       mode: always
       schema-locations: classpath:db/schema.sql
       data-locations: classpath:db/data.sql
       continue-on-error: true
+
+  #  elasticsearch:
+  #    uris: ${ES_HOSTS:}
+  #    username: ${ES_USERNAME:}
+  #    password: ${ES_PASSWORD:}
+
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+
+  thymeleaf:
+    cache: false #使用Thymeleaf模板引擎，关闭缓存
+    mode: HTML
+    encoding: UTF-8
+
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 10MB
+      # 设置总上传的文件大小
+      max-request-size: 20MB
+  #  ehcache 缓存
+  cache:
+    type: ehcache
+    ehcache:
+      config: ehcache/ehcache.xml
+
 logging:
   level:
     com.github.shadow.mapper: debug
+    org.springframework: warn
+
 server:
   port: 8080
+  shutdown: graceful
   # 配置Tomcat的访问日志格式化输出
   #  tomcat:
   #    accesslog:
@@ -94,22 +78,38 @@ server:
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
   type-aliases-package: com.github.shadow.entity
+  global-config:
+    banner: false
+    db-config:
+      #主键类型  0:"数据库ID自增", 1:"不操作", 2:"用户输入ID",3:"数字型snowflake", 4:"全局唯一ID UUID", 5:"字符串型snowflake";
+      id-type: auto
+      #字段策略
+      insert-strategy: not_null
+      update-strategy: not_null
+      select-strategy: not_empty
 
 knife4j:
   enable: true
-  openapi:
-    title: 接口文档
-    description: "描述信息"
-#    email: xiaoymin@foxmail.com
-#    concat: 八一菜刀
-#    url: https://docs.xiaominfo.com
-#    version: v4.0
-#    license: Apache 2.0
-#    license-url: https://stackoverflow.com/
-#    terms-of-service-url: https://stackoverflow.com/
-#    group:
-#      test1:
-#        group-name: 分组名称
-#        api-rule: package
-#        api-rule-resources:
-#          - com.knife4j.demo.new3
+  setting:
+    enable-swagger-models: true
+    swagger-model-name: 实体类列表
+    enable-document-manage: true
+    enable-after-script: true
+    enable-host: false
+    enable-host-text:
+    enable-request-cache: true
+    enable-filter-multipart-apis: false
+    enable-filter-multipart-api-method-type: POST
+    language: zh-CN
+    enable-footer: false
+    enable-footer-custom: true
+    footer-custom-content: Copyright © 2023 flankxu All Rights Reserved
+    enable-debug: true
+    enable-open-api: false
+    enable-group: true
+  cors: false
+  production: false
+  basic:
+    enable: false
+    username: admin
+    password: admin

@@ -1,11 +1,15 @@
 package com.github.shadow.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,7 +28,7 @@ import lombok.Data;
 @ApiModel(value = "SysUser对象", description = "用户表")
 public class SysUser implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4192586833401814128L;
 
     @ApiModelProperty("主键")
     @TableId(value = "id", type = IdType.AUTO)
@@ -33,28 +37,46 @@ public class SysUser implements Serializable {
     @ApiModelProperty("用户ID")
     private String userId;
 
-    @ApiModelProperty("名称")
+    @ApiModelProperty("用户名称")
     private String userName;
 
-    @ApiModelProperty("数据源类型")
+    @ApiModelProperty("用户密码")
+    @JsonIgnore
     private String password;
 
-    @ApiModelProperty("连接地址")
+    @ApiModelProperty("盐值")
+    @JsonIgnore
+    private String salt;
+
+    @ApiModelProperty("用户昵称")
     private String nickName;
 
-    @ApiModelProperty("备注")
-    private Integer deleteStatus;
+    @ApiModelProperty("用户头像")
+    private String avatar;
 
-    @ApiModelProperty("创建人")
+    @ApiModelProperty("性别:0=女|1=男")
+    private Integer sexType;
+
+    @ApiModelProperty("邮箱")
+    private String email;
+
+    @ApiModelProperty("手机")
+    private String phoneNo;
+
+    @ApiModelProperty("权限列表")
     private String permissions;
 
-    @ApiModelProperty("创建部门")
+    @ApiModelProperty("备注")
     private String extra;
 
     @ApiModelProperty("创建时间")
-    private LocalDateTime createTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
     @ApiModelProperty("修改时间")
-    private LocalDateTime updateTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;
 
 }

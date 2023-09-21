@@ -126,7 +126,7 @@ public class JsonUtils {
         return null;
     }
 
-    public static String toJsonString(Object value) {
+    public static String toJson(Object value) {
         try {
             return OBJECT_MAPPER.writeValueAsString(value);
         } catch (JsonProcessingException e) {
