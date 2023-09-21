@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public abstract class PageRequest {
+public class PageRequest {
     @ApiModelProperty("当前页")
     private int current = 1;
     @ApiModelProperty("每页的数量")

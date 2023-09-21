@@ -40,7 +40,9 @@ public class RequestLogAspect {
         logger.info("===Request=== {}: {}; params:{}", requestMethod, requestUrl, args);
         try {
             Object retVal = pjp.proceed(pjp.getArgs());
-            logger.info("===Result===  {}", JsonUtils.toJson(retVal));
+            if (!requestUrl.contains("page")) {
+                logger.info("===Result===  {}", JsonUtils.toJson(retVal));
+            }
             return retVal;
         } finally {
             stopWatch.stop();

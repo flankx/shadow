@@ -1,12 +1,11 @@
 layui.use(['table', 'dropdown'], function () {
     var table = layui.table;
     var dropdown = layui.dropdown;
-    var form = layui.form;
 
     // 创建渲染实例
     table.render({
         elem: '#test',
-        url: '/user/page', // 此处为静态模拟数据，实际使用时需换成真实接口
+        url: '/content/page', // 此处为静态模拟数据，实际使用时需换成真实接口
         request: {
             pageName: 'current', // 页码参数名称
             limitName: 'size',  // 每页数据参数名称
@@ -44,47 +43,11 @@ layui.use(['table', 'dropdown'], function () {
         cols: [[
             {type: 'checkbox', fixed: 'left'},
             {field: 'id', fixed: 'left', width: 80, title: 'ID', sort: true, totalRowText: '合计：'},
-            {field: 'userName', width: 80, title: '用户'},
-            {field: 'nickName', width: 80, title: '昵称'},
-            {
-                field: 'sexType', width: 80, title: '性别', templet: function (value) {
-                    if (value.sexType === 1) {
-                        return '<span style="color: blue">♂</span>';
-                    } else {
-                        return '<span style="color: pink">♀</span>';
-                    }
-                }
-            },
-            {
-                field: 'phoneNo',
-                title: '手机号 <i class="layui-icon layui-icon-tips layui-font-14" lay-event="phone-tips" title="该字段开启了编辑功能" style="margin-left: 5px;"></i>',
-                fieldTitle: '手机号',
-                hide: 0,
-                width: 150,
-                edit: 'text'
-            },
-            {
-                field: 'email',
-                title: '邮箱 <i class="layui-icon layui-icon-tips layui-font-14" lay-event="email-tips" title="该字段开启了编辑功能" style="margin-left: 5px;"></i>',
-                fieldTitle: '邮箱',
-                hide: 0,
-                width: 150,
-                edit: 'text'
-            },
-            {field: 'permissions', title: '权限', width: 120},
-            {field: 'createTime', title: '创建时间', width: 120},
-            {field: 'updateTime', title: '更新时间', width: 120},
-            {
-                field: 'extra',
-                title: '签名',
-                edit: 'textarea',
-                minWidth: 260,
-                expandedWidth: 260
-                // ,totalRow: '人物：<span class="layui-badge-rim">唐代：{{= d.TOTAL_ROW.era.tang }} </span> <span class="layui-badge-rim">宋代：{{= d.TOTAL_ROW.era.song }}</span> <span class="layui-badge-rim">现代：{{= d.TOTAL_ROW.era.xian }}</span>'
-            },
-            // {field:'ip', title:'IP', width: 120},
-            // {field:'experience', width: 100, title: '积分', sort: true, totalRow: '{{= d.TOTAL_NUMS }} 😊'},
-            // {field:'checkin', title:'打卡', width: 100, sort: true, totalRow: '{{= parseInt(d.TOTAL_NUMS) }} 次'},
+            {field: 'title', width: 240, title: '标题'},
+            {field: 'question', width: 240, title: '问题'},
+            {field: 'content', width: 480, title: '回答'},
+            {field: 'createTime', width: 120, title: '创建时间'},
+            {field: 'updateTime', width: 120, title: '更新时间'},
             {fixed: 'right', title: '操作', width: 150, minWidth: 125, toolbar: '#barDemo'}
         ]],
         done: function () {
@@ -103,7 +66,12 @@ layui.use(['table', 'dropdown'], function () {
                     switch (obj.id) {
                         case 'add':
                             // 调用打开弹层的工具方法
-                            open_form("#open_div", data, '新增', '80%', '65%');
+                            layer.open({
+                                title: '添加',
+                                type: 1,
+                                area: ['80%', '80%'],
+                                content: '<div style="padding: 16px;">自定义表单元素</div>'
+                            });
                             break;
                     }
                 }
@@ -132,20 +100,8 @@ layui.use(['table', 'dropdown'], function () {
                             // 重载 - 默认（参数重置）
                             table.reload('test', {
                                 where: {
-                                    abc: '123456',
-                                    //test: '新的 test2',
-                                    //token: '新的 token2'
+                                    abc: '123456'
                                 },
-                                /*
-                                cols: [[ // 重置表头
-                                  {type: 'checkbox', fixed: 'left'},
-                                  {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true, totalRowText: '合计：'},
-                                  {field:'sex', title:'性别', width:80, edit: 'text', sort: true},
-                                  {field:'experience', title:'积分', width:80, sort: true, totalRow: true, templet: '<div>{{= d.experience }} 分</div>'},
-                                  {field:'logins', title:'登入次数', width:100, sort: true, totalRow: true},
-                                  {field:'joinTime', title:'加入时间', width:120}
-                                ]]
-                                */
                             });
                             break;
                         case 'reload-deep':
@@ -263,18 +219,30 @@ layui.use(['table', 'dropdown'], function () {
             layer.msg('查看操作，当前行 ID:' + data.id);
         } else if (obj.event === 'edit') {
             // 根据编辑行为为form隐藏项赋值
-            open_form("#open_div", data, '编辑', '80%', '65%');
+            if (data.length !== 1) return layer.msg('请选择一行');
+            layer.open({
+                title: '编辑',
+                type: 1,
+                area: ['80%', '80%'],
+                content: '<div style="padding: 16px;">自定义表单元素</div>'
+            });
         } else if (obj.event === 'delete') {
             layer.confirm('确认删除？', function (index) {
                 obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
                 //向服务端发送删除指令
                 $.ajax({
                     type: "delete",  //数据提交方式(post/get)
-                    url: "/user/remove?userId=" + data.id,  //提交到的url
+                    url: "/content/remove?id=" + data.id,  //提交到的url
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",//返回的数据类型格式
                     success: function (result) {
-                        layer.msg(result.message, {icon: 1, time: 1000});
+                        layer.msg(result.message, {icon: 1, time: 1000}, function () {
+                            table.reload('test', {
+                                where: {
+                                    abc: '123456'
+                                },
+                            });
+                        });
                     }, error: function (e) {
                         console.log(e, 'error');
                         layer.msg("删除操作异常，请联系管理员！", {icon: 1, time: 1000});
@@ -327,92 +295,4 @@ layui.use(['table', 'dropdown'], function () {
         obj.update(update);
     });
 
-    // 新增或者编辑表单提交事件
-    form.on('submit(userSumbit)', function (data) {
-        $.ajax({
-            type: 'POST',
-            url: '/user/submit',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(data.field),
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result.code === 200) {
-                    // 重载 - 默认（参数重置）
-                    table.reload('test', {
-                        where: {
-                            current: '1',
-                            size: '10'
-                        }
-                    });
-                    layer.msg('修改成功', {icon: 1, time: 1000});
-                } else {  //失败
-                    layer.alert(result.message, {icon: 2}, function () {
-                        layer.close(index);
-                    });
-                }
-            }
-        });
-        layer.close(index);//关闭弹出层
-        return false;
-    });
 });
-
-var index;
-
-// 打开表单提交页码
-function open_form(element, data, title, width, height) {
-    index = layer.open({
-        type: 1,
-        title: [title, 'font-size:14px; text-align: center'],
-        area: [width, height],
-        fix: false, //不固定
-        maxmin: true,//开启最大化最小化按钮
-        shadeClose: true,//点击阴影处可关闭
-        shade: 0.4,//弹层的遮罩
-        anim: 5,//弹层的出场动画
-        skin: 'layui-layer-lan', //弹层的主题风格
-        content: $(element),
-        success: function () {
-            $(element).setForm(data);
-            layui.form.render();  // 下拉框赋值
-        },
-        end: function () {
-            $(element).css({"display": "none"})
-        }
-    });
-}
-
-// 填充表单数据
-$.fn.setForm = function (jsonValue) {
-    var obj = this;
-    $.each(jsonValue, function (name, ival) {
-        var $oinput = obj.find("input[name=" + name + "]");
-        if ($oinput.attr("type") === "checkbox") {
-            if (ival !== null) {
-                var checkboxObj = $("[name=" + name + "]");
-                var checkArray = ival.split(";");
-                for (var i = 0; i < checkboxObj.length; i++) {
-                    for (var j = 0; j < checkArray.length; j++) {
-                        if (checkboxObj[i].value() === checkArray[j]) {
-                            checkboxObj[i].click();
-                        }
-                    }
-                }
-            }
-        } else if ($oinput.attr("type") === "radio") {
-            $oinput.each(function () {
-                var radioObj = $("[name=" + name + "]");
-                for (var i = 0; i < radioObj.length; i++) {
-                    if (radioObj[i].defaultValue === ival) {
-                        radioObj[i].click();
-                    }
-                }
-            });
-        } else if ($oinput.attr("type") === "textarea") {
-            obj.find("[name=" + name + "]").html(ival);
-        } else {
-            obj.find("[name=" + name + "]").val(ival);
-        }
-    })
-};
