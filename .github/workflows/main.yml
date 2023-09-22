@@ -43,7 +43,6 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-#           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/shadow:1.0
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/shadow:latest
 #           target: production
