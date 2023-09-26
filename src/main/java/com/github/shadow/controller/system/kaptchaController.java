@@ -10,16 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.code.kaptcha.Producer;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@RestController
+@Controller
 @RequestMapping("/kaptcha")
 @Api(value = "验证码", tags = "验证码接口")
 public class kaptchaController {
@@ -30,7 +31,7 @@ public class kaptchaController {
 
     @GetMapping
     @ApiOperation(value = "获取字符验证码")
-    public void kaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView kaptcha(HttpServletRequest request, HttpServletResponse response) {
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             response.setDateHeader("Expires", 0);
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -44,5 +45,6 @@ public class kaptchaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
