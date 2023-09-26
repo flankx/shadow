@@ -31,7 +31,7 @@ public class kaptchaController {
 
     @GetMapping
     @ApiOperation(value = "获取字符验证码")
-    public ModelAndView kaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public void kaptcha(HttpServletRequest request, HttpServletResponse response) {
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             response.setDateHeader("Expires", 0);
             response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -45,6 +45,5 @@ public class kaptchaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 }
