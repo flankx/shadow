@@ -39,17 +39,17 @@ public class IndexController {
     @GetMapping(value = "/index")
     public String home(ModelMap modelMap) {
         modelMap.put("user", sysUserService.getUserById(ShiroUtils.getCurrentUser()));
-        return "/index";
+        return "index";
     }
 
     @GetMapping(value = "/main")
     public String main() {
-        return "/main";
+        return "main";
     }
 
     @GetMapping(value = "/login")
     public String login() {
-        return "/login";
+        return "login";
     }
 
     @PostMapping(value = "/login")

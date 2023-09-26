@@ -33,7 +33,7 @@ public class ProfileController {
     @GetMapping
     public String profile(ModelMap modelMap) {
         modelMap.put("user", sysUserService.getUserById(ShiroUtils.getCurrentUser()));
-        return "/profile";
+        return "profile";
     }
 
     @ApiOperation(value = "更新个人资料")
