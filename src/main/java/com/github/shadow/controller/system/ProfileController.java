@@ -52,8 +52,7 @@ public class ProfileController {
     @ResponseBody
     public R updatePassword(@RequestBody EditPassDTO editPass) {
         Integer userId = ShiroUtils.getCurrentUser();
-        SysUser user = sysUserService.getOne(
-            Wrappers.<SysUser>lambdaQuery().select(SysUser::getId, SysUser::getPassword).eq(SysUser::getId, userId));
+        SysUser user = sysUserService.getById(userId);
         if (user == null) {
             return R.fail("用户不存在！");
         }
