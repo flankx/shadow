@@ -13,13 +13,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.code.kaptcha.Producer;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/kaptcha")
 @Api(value = "验证码", tags = "验证码接口")
@@ -42,6 +43,7 @@ public class kaptchaController {
             BufferedImage image = captchaProducer.createImage(code);
             request.getSession().setAttribute("kaptcha", code);
             ImageIO.write(image, "jpg", outputStream);
+            log.info("生成验证码成功！code = {}", code);
         } catch (IOException e) {
             e.printStackTrace();
         }
