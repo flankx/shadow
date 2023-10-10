@@ -12,7 +12,7 @@ on:
 
 env:
   REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: shadow
 
 jobs:
   build:
