@@ -1,10 +1,10 @@
 ## 项目配置
 
-+ SpringBoot 2.7.6
++ SpringBoot 2.7.X
 + Spring shiro 1.12.0
 + Kaptcha 2.3.2
 + layui 2.8.16
-+ MySQL 8.0.32
++ MySQL 8
 + druid-spring-boot-starter 1.2.19
 + Docker
 

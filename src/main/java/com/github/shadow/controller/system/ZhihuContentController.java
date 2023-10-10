@@ -37,7 +37,7 @@ public class ZhihuContentController {
     @ApiIgnore
     @GetMapping
     public String content() {
-        return "/content";
+        return "content";
     }
 
     @GetMapping("/runSpider")

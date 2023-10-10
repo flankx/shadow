@@ -38,7 +38,7 @@ public class UserController {
     @ApiIgnore
     @GetMapping
     public String user() {
-        return "/user";
+        return "user";
     }
 
     @ApiOperation(value = "预览头像")
