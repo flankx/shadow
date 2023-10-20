@@ -1,5 +1,7 @@
 package com.github.shadow.controller.system;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,7 +9,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.shadow.entity.ZhihuContent;
 import com.github.shadow.pojo.R;
+import com.github.shadow.request.ExportRequest;
 import com.github.shadow.request.PageRequest;
+import com.github.shadow.service.IExcelWriterService;
 import com.github.shadow.service.IZhihuContentService;
 import com.github.shadow.spider.ContentPageProcesser;
 import com.github.shadow.spider.ContentPipeline;
@@ -33,6 +37,7 @@ import us.codecraft.webmagic.Spider;
 public class ZhihuContentController {
 
     private IZhihuContentService contentService;
+    private IExcelWriterService excelWriterService;
 
     @ApiIgnore
     @GetMapping
@@ -61,6 +66,13 @@ public class ZhihuContentController {
     @ResponseBody
     public R remove(@RequestParam Long id) {
         return R.status(contentService.removeById(id));
+    }
+
+    @PostMapping(value = "export-excel")
+    @ApiOperation(value = "导出EXCEL")
+    public void exportAlarmHistoryV2(HttpServletResponse response, @RequestBody ExportRequest request) {
+        // 按照默认最大分页数顺序写入EXCEL
+        excelWriterService.writeExcel(request, response, ZhihuContent.class);
     }
 
 }
